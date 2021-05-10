@@ -43,7 +43,6 @@ def formate_body_json(soup):
     regex = re.compile(r'[\n\r\t\/]')
     text = soup.get_text()
     text = regex.sub("", text)
-    text = regex2.sub("", text)
     return text
 
 ###############################################################################
