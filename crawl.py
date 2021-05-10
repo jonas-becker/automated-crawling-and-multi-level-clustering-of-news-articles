@@ -5,7 +5,7 @@ import re
 from bs4 import BeautifulSoup
 
 n_threads = 5   #amount of threads used for crawling
-url_toCrawl = "edition.cnn.com/WORLD/europe/9904/*"  #URL to crawl
+url_toCrawl = "reddit.com/r/MachineLearning/*"  #URL to crawl
 indexes_toCrawl = ["2019-47"]  #indexes to crawl from CommonCrawl
 
 def crawl_routine(client):
@@ -40,12 +40,15 @@ def dataframe_to_json(html_body):
     data 
 
 def formate_body_json(soup):    #mix the soup until it has a nice taste
-    regex = re.compile(r'[\n\r\t\"\u2022\u00a0\u00a9\/]')
-    text = soup.get_text()
-    text = regex.sub("", text)  #remove special characters
-    text = re.sub('\s+',' ', text)  #replace more than 2 whitespaces with a single whitespaces
-
-    return text
+    regex = re.compile(r'[\n\r\t\"\u2022\u00a0\u00a9\u03c0\u2013\u201d\u200b\u2019\/]')
+    text = soup.find_all('p')
+    result = ''
+    for element in text:
+        element = element.get_text()
+        element = regex.sub("", element)  #remove special characters
+        element = re.sub('\s+',' ', element)  #replace more than 2 whitespaces with a single whitespaces
+        result += str(element) + ' '
+    return result
 
 ###############################################################################
 
@@ -55,7 +58,6 @@ def main():
     df = pd.read_csv("results.csv") #read out the dataframe from the csv file
     html_body = df['html']
     results = dataframe_to_json(html_body)  #transform crawled data to json layout
-
 
 if __name__ == "__main__":
     main()
