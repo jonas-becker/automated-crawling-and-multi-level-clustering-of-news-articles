@@ -39,10 +39,12 @@ def dataframe_to_json(html_body):
     print("All crawled data has been written to results.json.")
     data 
 
-def formate_body_json(soup):
-    regex = re.compile(r'[\n\r\t\/]')
+def formate_body_json(soup):    #mix the soup until it has a nice taste
+    regex = re.compile(r'[\n\r\t\"\u2022\u00a0\u00a9\/]')
     text = soup.get_text()
-    text = regex.sub("", text)
+    text = regex.sub("", text)  #remove special characters
+    text = re.sub('\s+',' ', text)  #replace more than 2 whitespaces with a single whitespaces
+
     return text
 
 ###############################################################################
