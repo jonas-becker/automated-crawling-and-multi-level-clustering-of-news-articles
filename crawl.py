@@ -1,11 +1,13 @@
+from bs4.builder import HTML_5
 from comcrawl import IndexClient
 import pandas as pd
 import os
 import re
 from bs4 import BeautifulSoup
+from datetime import datetime
 
 n_threads = 5   #amount of threads used for crawling
-url_toCrawl = "reddit.com/r/MachineLearning/*"  #URL to crawl
+url_toCrawl = "edition.cnn.com/WORLD/europe/9904/*"  #URL to crawl      TESTING: edition.cnn.com/WORLD/europe/9904/*
 indexes_toCrawl = ["2019-47"]  #indexes to crawl from CommonCrawl
 
 def crawl_routine(client):
@@ -22,24 +24,30 @@ def crawl_routine(client):
     else:
         print("There already exists a results.csv file. Skipping crawling.")
 
-def dataframe_to_json(html_body):
+def dataframe_to_json(df):
     count = 0
     list_df = []    #the list which will be used to create a dataframe later
 
     print("Handling the crawled data...")
-    for element in html_body:   #use beautiful soup to extract useful text from the crawled html formatted string 
-        soup = BeautifulSoup(element, 'html.parser')
-        list_df.append([soup.title.get_text(), formate_body_json(soup)])   #append title and text to the list
+    for index, element in df.iterrows() :   #use beautiful soup to extract useful text from the crawled html formatted string 
+        soupHtml = BeautifulSoup(element['html'], 'html.parser')
+        url = element['url']
+        timestamp = pd.to_datetime(element['timestamp'])
+        lang = element['languages']
+        with open('souptxt.txt', 'w') as f:
+            f.write(element.to_string())
+        list_df.append([None, datetime.now(), None, timestamp, None, None, lang, None, None, formate_maintext_json(soupHtml), soupHtml.title.get_text(), None, None, url])   #append title and text to the list
         count += 1    
 
-    results = pd.DataFrame(list_df, columns=["title", "body"])  #create a dataframe from the list
+    results = pd.DataFrame(list_df, columns=["authors", "date_download", "date_modify", "date_publish", "description", "image_url", "language", "localpath", "source_domain", "maintext", "title", "title_page", "title_rss", "url"])  #create a dataframe from the list
     print('Amount of crawled articles: {}'.format(count))
 
-    data = results.to_json('results.json', orient='index', indent=2) #save the formatted texts (html excluded) to a json-layout 
+    data = results.to_json('results.json', orient='index', indent=2, date_format='iso') #save the formatted texts (html excluded) to a json-layout 
+    
     print("All crawled data has been written to results.json.")
     data 
 
-def formate_body_json(soup):    #mix the soup until it has a nice taste
+def formate_maintext_json(soup):    #mix the soup until it has a nice taste
     regex = re.compile(r'[\n\r\t\"\/]')
     text = soup.find_all('p')
     result = ''
@@ -57,8 +65,7 @@ def main():
     client = IndexClient(indexes_toCrawl, verbose=False) #initialize client to crawl, change verbose to see logs
     crawl_routine(client)   #crawling
     df = pd.read_csv("results.csv") #read out the dataframe from the csv file
-    html_body = df['html']
-    results = dataframe_to_json(html_body)  #transform crawled data to json layout
+    results = dataframe_to_json(df)  #transform crawled data to json layout
 
 if __name__ == "__main__":
     main()
