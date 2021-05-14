@@ -3,6 +3,7 @@ from comcrawl import IndexClient
 import pandas as pd
 import os
 import re
+import json
 from bs4 import BeautifulSoup
 from datetime import datetime
 
@@ -24,6 +25,10 @@ def crawl_routine(client):
     else:
         print("There already exists a results.csv file. Skipping crawling.")
 
+def write_results_in_file(element):
+    with open('souptxt.txt', 'w') as f:
+        f.write(element.to_string())
+
 def dataframe_to_json(df):
     count = 0
     list_df = []    #the list which will be used to create a dataframe later
@@ -34,9 +39,8 @@ def dataframe_to_json(df):
         url = element['url']
         timestamp = pd.to_datetime(element['timestamp'])
         lang = element['languages']
-        with open('souptxt.txt', 'w') as f:
-            f.write(element.to_string())
-        list_df.append([None, datetime.now(), None, timestamp, None, None, lang, None, None, formate_maintext_json(soupHtml), soupHtml.title.get_text(), None, None, url])   #append title and text to the list
+        write_results_in_file(element)
+        list_df.append([None, datetime.now(), None, timestamp, None, None, lang, None, None, formate_maintext_for_json(soupHtml), soupHtml.title.get_text(), None, None, url])   #append title and text to the list
         count += 1    
 
     results = pd.DataFrame(list_df, columns=["authors", "date_download", "date_modify", "date_publish", "description", "image_url", "language", "localpath", "source_domain", "maintext", "title", "title_page", "title_rss", "url"])  #create a dataframe from the list
@@ -44,18 +48,18 @@ def dataframe_to_json(df):
 
     data = results.to_json('results.json', orient='index', indent=2, date_format='iso') #save the formatted texts (html excluded) to a json-layout 
     
-    print("All crawled data has been written to results.json.")
-    data 
+    print("All crawled data has been written to results.json.") 
 
-def formate_maintext_json(soup):    #mix the soup until it has a nice taste
-    regex = re.compile(r'[\n\r\t\"\/]')
+def formate_maintext_for_json(soup):    #mix the soup until it has a nice taste
+    regex = re.compile(r'[\n\r\t\"]')
     text = soup.find_all('p')
     result = ''
     for element in text:
         element = element.get_text()
         element = regex.sub("", element)  #remove special characters
         element = re.sub(u'(\u2018|\u2019)', "'", element)
-        element = re.sub('\s+',' ', element)  #replace more than 2 whitespaces with a single whitespaces
+        element = re.sub(u'\/', '/', element)
+        element = re.sub(u'\s+',' ', element)  #replace more than 2 whitespaces with a single whitespaces
         result += str(element) + ' '
     return result
 
