@@ -1,4 +1,4 @@
-file_name = './test.warc.gz'
+file_name = './crawled_data.warc.gz'
 import boto3
 from botocore.handlers import disable_signing
 import requests
@@ -16,6 +16,7 @@ from datetime import datetime
 from time import time
 import warc
 from io import BytesIO
+import bs4
 
 def process_warc(file_name, limit=1000):    #unpack the gz and process it
     warc_file = warc.open(file_name, 'rb')
@@ -87,9 +88,16 @@ def dataframe_to_json(df):
     
     print("All crawled data has been written to results.json.") 
 
+def get_paragraphs(response):
+    soup = bs4.BeautifulSoup(response,'html.parser')
+    p_list = []
+    for p in soup.find_all('p'):
+        p_list.append(p.text.replace('\n', ' ').strip())
+    return p_list
 
+'''
 url = 'https://commoncrawl.s3.amazonaws.com/crawl-data/CC-MAIN-2020-16/warc.paths.gz'
-warc_path = 'crawl-data/CC-MAIN-2020-16/segments/1585370490497.6/warc/CC-MAIN-20200328074047-20200328104047-00000.warc.gz'
+warc_path = 'crawl-data/CC-MAIN-2020-16/segments/1585370505730.14/warc/CC-MAIN-20200401100029-20200401130029-00438.warc.gz'
 r = requests.get(url)
 print("Downloading from CommonCrawl...")
 compressed_file = BytesIO(r.content)
@@ -101,16 +109,24 @@ resource.meta.client.meta.events.register('choose-signer.s3.*', disable_signing)
 bucket = resource.Bucket('commoncrawl')
 resource.meta.client.download_file('commoncrawl', warc_path, file_name)
 
-
-print("Unpacking the warc.gz...")
-with gzip.open('test.warc.gz', 'rb') as f_in:   #unpacks the warc.gz
-    with open('test.warc', 'wb') as f_out:
+print("Unpacking the warc.gz...")   #not really needed with the current implementation, we are extracting directly from .gz
+with gzip.open('crawled_data.warc.gz', 'rb') as f_in:   #unpacks the warc.gz
+    with open('crawled_data.warc', 'wb') as f_out:
         shutil.copyfileobj(f_in, f_out)
+'''
 
+file_name = 'crawled_data.warc'
 
-file_name = 'test.warc'
-#header_list, html_content, url_list = process_warc("test.warc.gz", limit = 1000)
+print("Processing warc.gz...")
+header_list, html_content, url_list = process_warc("crawled_data.warc.gz", limit = 1000)
+paragraphs = []
+
+for element in html_content:
+    if (len(element) != 0):
+        paragraphs = get_paragraphs(element)
+
+print(paragraphs)
 
 df = pd.read_csv("results.csv") #read out the dataframe from the csv file
-results = dataframe_to_json(df)  #transform crawled data to json layout
+#results = dataframe_to_json(df)  #transform crawled data to json layout
 

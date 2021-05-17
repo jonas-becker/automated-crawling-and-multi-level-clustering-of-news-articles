@@ -4,3 +4,6 @@
 !.vscode/settings.json
 test.warc
 test.warc.gz
+*.csv
+*.warc
+*.gz
