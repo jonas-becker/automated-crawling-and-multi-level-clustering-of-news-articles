@@ -2,3 +2,5 @@
 *.code-workspace
 .vscode/
 !.vscode/settings.json
+test.warc
+test.warc.gz
