@@ -18,6 +18,7 @@ import warc
 from io import BytesIO
 import bs4
 
+
 def process_warc(file_name, target_websites, limit=1000):    #unpack the gz and process it
     warc_file = warc.open(file_name, 'rb')
     t0 = time()
@@ -46,6 +47,7 @@ def process_warc(file_name, target_websites, limit=1000):    #unpack the gz and 
                         header_list.append(header)
                         url_list.append(url)
                         print("Found matching data for " + url)
+                df = pd.DataFrame(list(zip(html_content, header_list, url_list)), columns = ['maintext','header','url'])
             except Exception as e:
                 print(e)
                 continue
@@ -53,7 +55,7 @@ def process_warc(file_name, target_websites, limit=1000):    #unpack the gz and 
     pd.DataFrame(warc_file).to_csv("results.csv")  #save the crawled dataframe to a csv file
     warc_file.close()
     print('Parsing took %s seconds and went through %s documents' %(time() - t0, n_documents))
-    return header_list, html_content, url_list
+    return df
     
 
 def formate_maintext_for_json(soup):    #mix the soup until it has a nice taste
@@ -79,9 +81,7 @@ def dataframe_to_json(df):
 
     print("Handling the crawled data...")
     for index, element in df.iterrows() :   #use beautiful soup to extract useful text from the crawled html formatted string 
-        soupHtml = BeautifulSoup(element, 'html.parser')
-        write_results_in_file(element)
-        list_df.append([None, datetime.now(), None, None, None, None, None, None, None, formate_maintext_for_json(soupHtml), None, None, None, None])   #append title and text to the list
+        list_df.append([None, datetime.now(), None, None, None, None, None, None, None, df["maintext"][index], "Placeholder title", None, None, df["url"][index]])   #append title and text to the list
         count += 1    
 
     results = pd.DataFrame(list_df, columns=["authors", "date_download", "date_modify", "date_publish", "description", "image_url", "language", "localpath", "source_domain", "maintext", "title", "title_page", "title_rss", "url"])  #create a dataframe from the list
@@ -121,15 +121,16 @@ with gzip.open('crawled_data.warc.gz', 'rb') as f_in:   #unpacks the warc.gz
 target_websites= ["cnn.com", "washingtonpost.com", "nytimes.com", "abcnews.go.com", "bbc.com", "cbsnews.com", "chicagotribune.com", "foxnews.com", "huffpost.com", "latimes.com", "nbcnews.com", "npr.org/sections/news", "politico.com", "reuters.com", "slate.com", "theguardian.com", "wsj.com", "usatoday.com"]  #these trings will be compared with the URL and if matched added to datasets. You may add a specific path you are looking for
 file_name = 'crawled_data.warc'
 print("Processing warc.gz...")
-header_list, html_content, url_list = process_warc("crawled_data.warc.gz", target_websites, limit = 100000)
+df = process_warc("crawled_data.warc.gz", target_websites, limit = 100000)
 paragraphs = []
 
-for i, element in enumerate(html_content):
+for element in df["maintext"]:
     if (len(element) != 0):
         paragraphs.append(get_paragraphs(element))
 
-print(paragraphs)
+df["maintext"] = paragraphs
+#pd.DataFrame(df).to_csv("results.csv")
+results = dataframe_to_json(df)
 
-df = pd.read_csv("results.csv") #read out the dataframe from the csv file
 #results = dataframe_to_json(df)  #transform crawled data to json layout
 
