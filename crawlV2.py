@@ -18,7 +18,7 @@ import warc
 from io import BytesIO
 import bs4
 
-def process_warc(file_name, limit=1000):    #unpack the gz and process it
+def process_warc(file_name, target_websites, limit=1000):    #unpack the gz and process it
     warc_file = warc.open(file_name, 'rb')
     t0 = time()
     n_documents = 0
@@ -40,9 +40,12 @@ def process_warc(file_name, limit=1000):    #unpack the gz and process it
             continue
         else:
             try:
-                html_content.append(html)
-                header_list.append(header)
-                url_list.append(url)
+                for i in target_websites:
+                    if i in url:
+                        html_content.append(html)
+                        header_list.append(header)
+                        url_list.append(url)
+                        print("Found matching data for " + url)
             except Exception as e:
                 print(e)
                 continue
@@ -89,11 +92,11 @@ def dataframe_to_json(df):
     print("All crawled data has been written to results.json.") 
 
 def get_paragraphs(response):
-    soup = bs4.BeautifulSoup(response,'html.parser')
-    p_list = []
-    for p in soup.find_all('p'):
-        p_list.append(p.text.replace('\n', ' ').strip())
-    return p_list
+    soup = BeautifulSoup(response, 'html.parser')
+    result = ""
+    for para in soup.find_all("p"):
+        result += para.get_text() + " "
+    return result[:-1]
 
 '''
 url = 'https://commoncrawl.s3.amazonaws.com/crawl-data/CC-MAIN-2020-16/warc.paths.gz'
@@ -115,15 +118,15 @@ with gzip.open('crawled_data.warc.gz', 'rb') as f_in:   #unpacks the warc.gz
         shutil.copyfileobj(f_in, f_out)
 '''
 
+target_websites= ["cnn.com", "washingtonpost.com", "nytimes.com", "abcnews.go.com", "bbc.com", "cbsnews.com", "chicagotribune.com", "foxnews.com", "huffpost.com", "latimes.com", "nbcnews.com", "npr.org/sections/news", "politico.com", "reuters.com", "slate.com", "theguardian.com", "wsj.com", "usatoday.com"]  #these trings will be compared with the URL and if matched added to datasets. You may add a specific path you are looking for
 file_name = 'crawled_data.warc'
-
 print("Processing warc.gz...")
-header_list, html_content, url_list = process_warc("crawled_data.warc.gz", limit = 1000)
+header_list, html_content, url_list = process_warc("crawled_data.warc.gz", target_websites, limit = 100000)
 paragraphs = []
 
-for element in html_content:
+for i, element in enumerate(html_content):
     if (len(element) != 0):
-        paragraphs = get_paragraphs(element)
+        paragraphs.append(get_paragraphs(element))
 
 print(paragraphs)
 
