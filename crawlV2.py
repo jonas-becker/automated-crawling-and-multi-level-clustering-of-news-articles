@@ -1,6 +1,4 @@
 file_name = './crawled_data.warc.gz'
-import boto3
-from botocore.handlers import disable_signing
 import requests
 import gzip
 from bs4.builder import HTML_5
@@ -18,7 +16,16 @@ import warc
 from io import BytesIO
 import bs4
 
-
+def check_url_for_data(url):
+    try:
+        resp = requests.get('https://index.commoncrawl.org/CC-MAIN-2020-16-index?url='+url+'&output=json')
+        if 'No Captures found' in resp.text:
+            return False
+        else:
+            return True
+    except Exception as e:
+        print(e)
+        
 def process_warc(file_name, target_websites, limit=1000):    #unpack the gz and process it
     warc_file = warc.open(file_name, 'rb')
     t0 = time()
@@ -132,5 +139,7 @@ df["maintext"] = paragraphs
 #pd.DataFrame(df).to_csv("results.csv")
 results = dataframe_to_json(df)
 
-#results = dataframe_to_json(df)  #transform crawled data to json layout
+results = dataframe_to_json(df)  #transform crawled data to json layout
 
+url= 'cnn'
+print(check_url_for_data(url))
