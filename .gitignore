@@ -4,10 +4,6 @@
 !.vscode/settings.json
 test.warc
 test.warc.gz
-*.csv
-*.warc
-*.gz
-*.json
 /crawl_data/*
 /crawl_csv/*
 /crawl_json/*
