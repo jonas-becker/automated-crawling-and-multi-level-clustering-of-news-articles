@@ -2,8 +2,6 @@
 *.code-workspace
 .vscode/
 !.vscode/settings.json
-test.warc
-test.warc.gz
-/crawl_data/*
-/crawl_csv/*
-/crawl_json/*
+*.csv
+*.gz
+*.json
