@@ -143,7 +143,6 @@ def main():
 
             df["maintext"] = paragraphs
             pd.DataFrame(df).to_csv("./crawl_csv/crawl_"+str(all_index)+'_'+str(index)+".csv")
-
             results = dataframe_to_json(df,all_index, index)  #transform crawled data to json layout
 
 if __name__ == '__main__':
