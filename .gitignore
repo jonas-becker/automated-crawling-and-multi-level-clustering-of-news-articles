@@ -8,3 +8,6 @@ test.warc.gz
 *.warc
 *.gz
 *.json
+/crawl_data/*
+/crawl_csv/*
+/crawl_json/*
