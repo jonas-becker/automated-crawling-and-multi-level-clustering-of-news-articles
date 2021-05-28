@@ -15,7 +15,7 @@ from io import BytesIO
 TARGET_WEBSITES = ["cnn.com", "washingtonpost.com", "nytimes.com", "abcnews.go.com", "bbc.com", "cbsnews.com", "chicagotribune.com", "foxnews.com", "huffpost.com", "latimes.com", "nbcnews.com", "npr.org/sections/news", "politico.com", "reuters.com", "slate.com", "theguardian.com", "wsj.com", "usatoday.com"]  #these trings will be compared with the URL and if matched added to datasets. You may add a specific path you are looking for
 TEST_TARGETS = ["cnn.com", "washingtonpost.com"]
 INDEX = '2020-16'
-MAX_ARCHIVE_FILES_PER_URL = 6   #change to increase or decrease the amount of crawled data per URL (Estimated size per archive: 1.2 GB)
+MAX_ARCHIVE_FILES_PER_URL = 1   #change to increase or decrease the amount of crawled data per URL (Estimated size per archive: 1.2 GB)
 
 def check_url_for_data(url):
     try:
@@ -113,35 +113,45 @@ def check_urls_for_data():
         all_archive_files.append(archiveFiles)
     return all_archive_files
 
+def download_archives(warc_paths, all_index):
+    for index, _ in enumerate(warc_paths):
+        print("Downloading from CommonCrawl: " + warc_paths[index])
+        resource = boto3.resource('s3')
+        resource.meta.client.meta.events.register('choose-signer.s3.*', disable_signing)
+        bucket = resource.Bucket('commoncrawl')
+        resource.meta.client.download_file('commoncrawl', warc_paths[index], "./crawl_data/crawled_data_"+str(all_index)+'_'+str(index)+".warc.gz")
+
+def get_all_paragraphs(df):
+    paragraphs = []
+
+    for element in df["maintext"]:
+        if (len(element) != 0):
+            paragraphs.append(get_paragraphs(element))
+
+    df["maintext"] = paragraphs
+    return df
+
+def get_warc_paths(archiveFiles):
+    warc_paths = []
+
+    for element in archiveFiles[:MAX_ARCHIVE_FILES_PER_URL]:
+        warc_paths.append(element["filename"])
+
+    print("\nAdded " + str(len(warc_paths)) + " archives to download.")
+    return warc_paths
+
 ################################################################################################################
 
 def main():
     all_archiveFiles = check_urls_for_data()
     for all_index, archiveFiles in enumerate(all_archiveFiles):
-        warc_paths = []
-        for element in archiveFiles[:MAX_ARCHIVE_FILES_PER_URL]:
-            warc_paths.append(element["filename"])
+        warc_paths = get_warc_paths(archiveFiles)
+        download_archives(warc_paths, all_index)
 
-        print("\nAdded " + str(len(warc_paths)) + " archives to download.")
-
-        for index, element in enumerate(warc_paths):
-            print("Downloading from CommonCrawl: " + warc_paths[index])
-            resource = boto3.resource('s3')
-            resource.meta.client.meta.events.register('choose-signer.s3.*', disable_signing)
-            bucket = resource.Bucket('commoncrawl')
-            resource.meta.client.download_file('commoncrawl', warc_paths[index], "./crawl_data/crawled_data_"+str(all_index)+'_'+str(index)+".warc.gz")
-        
-
-        for index, elem in enumerate(warc_paths):
+        for index, _ in enumerate(warc_paths):
             print("Processing ./crawl_data/crawled_data_"+str(all_index)+'_'+str(index)+".warc.gz...")
             df = process_warc("./crawl_data/crawled_data_"+str(all_index)+'_'+str(index)+".warc.gz", TARGET_WEBSITES, limit = 100000)
-            paragraphs = []
-
-            for element in df["maintext"]:
-                if (len(element) != 0):
-                    paragraphs.append(get_paragraphs(element))
-
-            df["maintext"] = paragraphs
+            df = get_all_paragraphs(df)
             pd.DataFrame(df).to_csv("./crawl_csv/crawl_"+str(all_index)+'_'+str(index)+".csv")
             results = dataframe_to_json(df,all_index, index)  #transform crawled data to json layout
 
