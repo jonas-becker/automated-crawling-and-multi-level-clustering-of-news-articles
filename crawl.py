@@ -1,12 +1,11 @@
-#from bs4.builder import HTML_5
-#from comcrawl import IndexClient
+from numpy import tile
 import pandas as pd
 import urllib.request
-import re
 import json
 from bs4 import BeautifulSoup
 from datetime import datetime
 from time import time
+import os.path
 import warc
 import boto3
 from botocore.handlers import disable_signing
@@ -64,22 +63,18 @@ def process_warc(file_name, target_websites, limit=1000):    #unpack the gz and 
     print('Parsing took %s seconds and went through %s documents' %(time() - t0, n_documents))
     return df
 
-def formate_maintext_for_json(soup):    #mix the soup until it has a nice taste
-    regex = re.compile(r'[\n\r\t\"]')
-    text = soup.find_all('p')
-    result = ''
-    for element in text:
-        element = element.get_text()
-        element = regex.sub("", element)  #remove special characters
-        element = re.sub(u'(\u2018|\u2019)', "'", element)
-        element = re.sub(u'\/', '/', element)
-        element = re.sub(u'\s+',' ', element)  #replace more than 2 whitespaces with a single whitespaces
-        result += str(element) + ' '
-    return result
-
-def write_results_in_file(element):
-    with open('souptxt.txt', 'w') as f:
-        f.write(element.to_string())
+# def formate_maintext_for_json(soup):    #mix the soup until it has a nice taste
+#     regex = re.compile(r'[\n\r\t\"]')
+#     text = soup.find_all('p')
+#     result = ''
+#     for element in text:
+#         element = element.get_text()
+#         element = regex.sub("", element)  #remove special characters
+#         element = re.sub(u'(\u2018|\u2019)', "'", element)
+#         element = re.sub(u'\/', '/', element)
+#         element = re.sub(u'\s+',' ', element)  #replace more than 2 whitespaces with a single whitespaces
+#         result += str(element) + ' '
+#     return title
 
 def dataframe_to_json(df, all_index, index):
     count = 0
@@ -87,7 +82,7 @@ def dataframe_to_json(df, all_index, index):
 
     print("Handling the crawled data...")
     for i, element in df.iterrows() :   #use beautiful soup to extract useful text from the crawled html formatted string 
-        list_df.append([None, datetime.now(), None, None, None, None, None, None, None, df["maintext"][i], "Placeholder title", None, None, df["url"][i]])   #append title and text to the list
+        list_df.append([None, datetime.now(), None, None, None, None, None, None, None, df["maintext"][i], df["title"][i], None, None, df["url"][i]])   #append title and text to the list
         count += 1    
 
     results = pd.DataFrame(list_df, columns=["authors", "date_download", "date_modify", "date_publish", "description", "image_url", "language", "localpath", "source_domain", "maintext", "title", "title_page", "title_rss", "url"])  #create a dataframe from the list
@@ -97,8 +92,7 @@ def dataframe_to_json(df, all_index, index):
     
     print("Crawled data of ./crawl_data/crawled_data_"+str(all_index)+'_'+str(index)+".warc.gz has been written to ./crawl_json/crawl_"+str(all_index)+'_'+str(index)+".json") 
 
-def get_paragraphs(response):
-    soup = BeautifulSoup(response, 'html.parser')
+def get_paragraphs(soup):
     result = ""
     for para in soup.find_all("p"):
         result += para.get_text() + " "
@@ -119,16 +113,21 @@ def download_archives(warc_paths, all_index):
         resource = boto3.resource('s3')
         resource.meta.client.meta.events.register('choose-signer.s3.*', disable_signing)
         bucket = resource.Bucket('commoncrawl')
-        resource.meta.client.download_file('commoncrawl', warc_paths[index], "./crawl_data/crawled_data_"+str(all_index)+'_'+str(index)+".warc.gz")
+        if os.path.isfile("crawl_data/crawled_data_"+str(all_index)+'_'+str(index)+".warc.gz") is False: 
+            resource.meta.client.download_file('commoncrawl', warc_paths[index], "./crawl_data/crawled_data_"+str(all_index)+'_'+str(index)+".warc.gz")
 
 def get_all_paragraphs(df):
     paragraphs = []
+    titles = []
 
-    for element in df["maintext"]:
+    for element in df["maintext"]: 
+        soup = BeautifulSoup(element, 'html.parser')
         if (len(element) != 0):
-            paragraphs.append(get_paragraphs(element))
+            paragraphs.append(get_paragraphs(soup))
+            titles.append(soup.title.text)
 
     df["maintext"] = paragraphs
+    df["title"] = titles
     return df
 
 def get_warc_paths(archiveFiles):
