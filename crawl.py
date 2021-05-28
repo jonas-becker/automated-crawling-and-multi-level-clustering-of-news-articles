@@ -1,5 +1,6 @@
 from numpy import tile
 import pandas as pd
+import re
 import urllib.request
 import json
 from bs4 import BeautifulSoup
@@ -7,6 +8,7 @@ from datetime import datetime
 from time import time
 import os.path
 import warc
+from ast import literal_eval
 import boto3
 from botocore.handlers import disable_signing
 from io import BytesIO
@@ -63,18 +65,18 @@ def process_warc(file_name, target_websites, limit=1000):    #unpack the gz and 
     print('Parsing took %s seconds and went through %s documents' %(time() - t0, n_documents))
     return df
 
-# def formate_maintext_for_json(soup):    #mix the soup until it has a nice taste
-#     regex = re.compile(r'[\n\r\t\"]')
-#     text = soup.find_all('p')
-#     result = ''
-#     for element in text:
-#         element = element.get_text()
-#         element = regex.sub("", element)  #remove special characters
-#         element = re.sub(u'(\u2018|\u2019)', "'", element)
-#         element = re.sub(u'\/', '/', element)
-#         element = re.sub(u'\s+',' ', element)  #replace more than 2 whitespaces with a single whitespaces
-#         result += str(element) + ' '
-#     return title
+def format_string(text):    #mix the soup until it has a nice taste
+    regex = re.compile(r'[\n\r\t\"]')
+    text = regex.sub("", text)  #remove special characters
+    text = re.sub(u'(\u2018|\u2019)', "'", text)
+    text = re.sub(u'(\u00fa|\u00ed|\u00e9|\u00f1|\u201c|\u00e1|\u00f3|\u4e0b|\u8f7d|\u9644|\u4ef6|\u00a9|\u00bd|\u00bc|\u2014|\u0005|\u0007|\u0006|\u4fdd|\u5b58|\u5230|\u76f8|\u518c|\u201d|\u00e8|\u00e0)', "", text)
+    text = re.sub(u'\/', '/', text)
+    text = re.sub(u'\s+',' ', text)  #replace more than 2 whitespaces with a single whitespaces
+    return text
+
+def format_url(text):
+    #unfinished
+    return text
 
 def dataframe_to_json(df, all_index, index):
     count = 0
@@ -82,7 +84,7 @@ def dataframe_to_json(df, all_index, index):
 
     print("Handling the crawled data...")
     for i, element in df.iterrows() :   #use beautiful soup to extract useful text from the crawled html formatted string 
-        list_df.append([None, datetime.now(), None, None, None, None, None, None, None, df["maintext"][i], df["title"][i], None, None, df["url"][i]])   #append title and text to the list
+        list_df.append([None, datetime.now(), None, None, None, None, None, None, None, format_string(df["maintext"][i]), format_string(df["title"][i]), None, None, format_url(df["url"][i])])   #append title and text to the list
         count += 1    
 
     results = pd.DataFrame(list_df, columns=["authors", "date_download", "date_modify", "date_publish", "description", "image_url", "language", "localpath", "source_domain", "maintext", "title", "title_page", "title_rss", "url"])  #create a dataframe from the list
