@@ -1,6 +1,8 @@
 from numpy import tile
 import pandas as pd
 import re
+import urllib
+from urllib.parse import urlparse
 import urllib.request
 import json
 from bs4 import BeautifulSoup
@@ -8,7 +10,6 @@ from datetime import datetime
 from time import time
 import os.path
 import warc
-from ast import literal_eval
 import boto3
 from botocore.handlers import disable_signing
 from io import BytesIO
@@ -78,13 +79,17 @@ def format_url(text):
     #unfinished
     return text
 
+def get_domain(text):
+    domain = urlparse(text).netloc
+    return domain
+
 def dataframe_to_json(df, all_index, index):
     count = 0
     list_df = []    #the list which will be used to create a dataframe later
 
     print("Handling the crawled data...")
     for i, element in df.iterrows() :   #use beautiful soup to extract useful text from the crawled html formatted string 
-        list_df.append([None, datetime.now(), None, None, None, None, None, None, None, format_string(df["maintext"][i]), format_string(df["title"][i]), None, None, format_url(df["url"][i])])   #append title and text to the list
+        list_df.append([None, datetime.now(), datetime.now(), None, None, None, None, None, get_domain(df["url"][i]), format_string(df["maintext"][i]), format_string(df["title"][i]), None, None, format_url(df["url"][i])])   #append title and text to the list
         count += 1    
 
     results = pd.DataFrame(list_df, columns=["authors", "date_download", "date_modify", "date_publish", "description", "image_url", "language", "localpath", "source_domain", "maintext", "title", "title_page", "title_rss", "url"])  #create a dataframe from the list
