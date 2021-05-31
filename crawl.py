@@ -49,8 +49,11 @@ def process_warc(file_name, target_websites, limit=1000):    #unpack the gz and 
     url_list = []
     header_list = []
     html_content = []
+    date_list = []
 
     for record in warc_file:
+        #print(record['WARC-Date'])
+
         if n_documents >= limit:
             break
         url = record.url
@@ -69,8 +72,9 @@ def process_warc(file_name, target_websites, limit=1000):    #unpack the gz and 
                         html_content.append(html)
                         header_list.append(header)
                         url_list.append(url)
+                        date_list.append(record['WARC-Date'])
                         print("Found matching data for " + url)
-                df = pd.DataFrame(list(zip(html_content, header_list, url_list)), columns = ['maintext','header','url'])
+                df = pd.DataFrame(list(zip(html_content, header_list, url_list, date_list)), columns = ['maintext','header','url','date'])
             except Exception as e:
                 print(e)
                 continue
@@ -134,7 +138,7 @@ def dataframe_to_json(df, all_index, index):
 
     print("Handling the crawled data...")
     for i, _ in df.iterrows() :   #use beautiful soup to extract useful text from the crawled html formatted string 
-        list_df.append([None, datetime.now(), datetime.now(), None, get_description(df["maintext"][i], 50), None, None, None, get_domain(df["url"][i]), format_string(df["maintext"][i]), format_string(df["title"][i]), None, None, format_url(df["url"][i])])   #append title and text to the list
+        list_df.append([None, datetime.now(), datetime.now(), df["date"][i], get_description(df["maintext"][i], 50), None, None, None, get_domain(df["url"][i]), format_string(df["maintext"][i]), format_string(df["title"][i]), None, None, format_url(df["url"][i])])   #append title and text to the list
         count += 1    
 
     results = pd.DataFrame(list_df, columns=["authors", "date_download", "date_modify", "date_publish", "description", "image_url", "language", "localpath", "source_domain", "maintext", "title", "title_page", "title_rss", "url"])  #create a dataframe from the list
@@ -194,7 +198,7 @@ def get_maintext_and_title(df):
 
     for element in df["maintext"]: 
         soup = BeautifulSoup(element, 'html.parser')
-        if (len(element) != 0):
+        if (len(element) != 0 and soup.title != None):
             paragraphs.append(get_paragraphs(soup))
             titles.append(soup.title.text)
 
