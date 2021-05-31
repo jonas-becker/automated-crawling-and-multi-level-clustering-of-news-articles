@@ -106,6 +106,21 @@ def get_domain(text):
     domain = urlparse(text).netloc
     return domain
 
+def get_description(text, wordCount):
+    '''
+    Get the description for a specific article maintext.
+    :param text: The text to extract the description from
+    :param wordCount: The maximum amount of words a description should contain
+    :return: the extracted description
+    '''
+    desc = ' '.join(text.split()[:wordCount])
+    if (len(desc) < 5):
+        desc = None
+    else:
+        desc = format_string(desc)
+    return desc
+    
+
 def dataframe_to_json(df, all_index, index):
     '''
     Pushes all data from the dataframe into a JSON-Layout.
@@ -119,7 +134,7 @@ def dataframe_to_json(df, all_index, index):
 
     print("Handling the crawled data...")
     for i, _ in df.iterrows() :   #use beautiful soup to extract useful text from the crawled html formatted string 
-        list_df.append([None, datetime.now(), datetime.now(), None, None, None, None, None, get_domain(df["url"][i]), format_string(df["maintext"][i]), format_string(df["title"][i]), None, None, format_url(df["url"][i])])   #append title and text to the list
+        list_df.append([None, datetime.now(), datetime.now(), None, get_description(df["maintext"][i], 50), None, None, None, get_domain(df["url"][i]), format_string(df["maintext"][i]), format_string(df["title"][i]), None, None, format_url(df["url"][i])])   #append title and text to the list
         count += 1    
 
     results = pd.DataFrame(list_df, columns=["authors", "date_download", "date_modify", "date_publish", "description", "image_url", "language", "localpath", "source_domain", "maintext", "title", "title_page", "title_rss", "url"])  #create a dataframe from the list
@@ -142,7 +157,7 @@ def get_paragraphs(soup):
 
 def check_urls_for_data():
     '''
-    Get the archive files including their WARC-Paths for the given TEST-Targets.
+    Get the archive files including their WARC-Paths for the given TEST_TARGETS.
     :return: all archive files that are fitting with the TEST_TARGETS
     '''
     all_archive_files = []
