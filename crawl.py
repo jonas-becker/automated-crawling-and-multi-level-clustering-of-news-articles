@@ -19,7 +19,13 @@ TEST_TARGETS = ["cnn.com", "washingtonpost.com"]
 INDEX = '2020-16'
 MAX_ARCHIVE_FILES_PER_URL = 1   #change to increase or decrease the amount of crawled data per URL (Estimated size per archive: 1.2 GB)
 
+
 def check_url_for_data(url):
+    '''
+    Check if JSON-Object is available under the URL
+    :param url: URL of TEST_TARGETS
+    :return: returns nothing
+    '''
     try:
         with urllib.request.urlopen('https://index.commoncrawl.org/CC-MAIN-'+ INDEX +'-index?url='+url+'&output=json') as url:
             resp = []
@@ -28,8 +34,15 @@ def check_url_for_data(url):
             return resp
     except Exception as e:
         print(e)
-        
+          
 def process_warc(file_name, target_websites, limit=1000):    #unpack the gz and process it
+    '''
+    Extracts Data from WARC-File and writes into a Dataframe
+    :param file_name: Name of WARC-File
+    :param target_websites: -
+    :param limit: -
+    :return: returns Dataframe
+    '''
     warc_file = warc.open(file_name, 'rb')
     t0 = time()
     n_documents = 0
@@ -67,6 +80,11 @@ def process_warc(file_name, target_websites, limit=1000):    #unpack the gz and 
     return df
 
 def format_string(text):    #mix the soup until it has a nice taste
+    '''
+    Filters special Characters and replace them
+    :param text: to formate text
+    :return: returns formated text
+    '''
     regex = re.compile(r'[\n\r\t\"]')
     text = regex.sub("", text)  #remove special characters
     text = re.sub(u'(\u2018|\u2019)', "'", text)
@@ -80,15 +98,25 @@ def format_url(text):
     return text
 
 def get_domain(text):
+    '''
+    :param text: -
+    :return: -
+    '''
     domain = urlparse(text).netloc
     return domain
 
 def dataframe_to_json(df, all_index, index):
+    '''
+    :param df: Dataframe
+    :param all_index: -
+    :param index: -
+    :return: returns nothing
+    '''
     count = 0
     list_df = []    #the list which will be used to create a dataframe later
 
     print("Handling the crawled data...")
-    for i, element in df.iterrows() :   #use beautiful soup to extract useful text from the crawled html formatted string 
+    for i, _ in df.iterrows() :   #use beautiful soup to extract useful text from the crawled html formatted string 
         list_df.append([None, datetime.now(), datetime.now(), None, None, None, None, None, get_domain(df["url"][i]), format_string(df["maintext"][i]), format_string(df["title"][i]), None, None, format_url(df["url"][i])])   #append title and text to the list
         count += 1    
 
@@ -100,12 +128,20 @@ def dataframe_to_json(df, all_index, index):
     print("Crawled data of ./crawl_data/crawled_data_"+str(all_index)+'_'+str(index)+".warc.gz has been written to ./crawl_json/crawl_"+str(all_index)+'_'+str(index)+".json") 
 
 def get_paragraphs(soup):
+    '''
+    Extracts all paragraphs of a Soup-object
+    :param soup: Soup-object
+    :return: -
+    '''
     result = ""
     for para in soup.find_all("p"):
         result += para.get_text() + " "
     return result[:-1]
 
 def check_urls_for_data():
+    '''
+    :return: -
+    '''
     all_archive_files = []
     
     for url in TEST_TARGETS:
@@ -115,6 +151,11 @@ def check_urls_for_data():
     return all_archive_files
 
 def download_archives(warc_paths, all_index):
+    '''
+    :param warc_paths: -
+    :param all_index:
+    :return: returns nothing
+    '''
     for index, _ in enumerate(warc_paths):
         print("Downloading from CommonCrawl: " + warc_paths[index])
         resource = boto3.resource('s3')
@@ -123,7 +164,11 @@ def download_archives(warc_paths, all_index):
         if os.path.isfile("crawl_data/crawled_data_"+str(all_index)+'_'+str(index)+".warc.gz") is False: 
             resource.meta.client.download_file('commoncrawl', warc_paths[index], "./crawl_data/crawled_data_"+str(all_index)+'_'+str(index)+".warc.gz")
 
-def get_all_paragraphs(df):
+def get_maintext_and_title(df):
+    '''
+    :param df: Dataframe
+    :return: -
+    '''
     paragraphs = []
     titles = []
 
@@ -138,6 +183,10 @@ def get_all_paragraphs(df):
     return df
 
 def get_warc_paths(archiveFiles):
+    '''
+    :param archiveFiles
+    :return: -
+    '''
     warc_paths = []
 
     for element in archiveFiles[:MAX_ARCHIVE_FILES_PER_URL]:
@@ -157,7 +206,7 @@ def main():
         for index, _ in enumerate(warc_paths):
             print("Processing ./crawl_data/crawled_data_"+str(all_index)+'_'+str(index)+".warc.gz...")
             df = process_warc("./crawl_data/crawled_data_"+str(all_index)+'_'+str(index)+".warc.gz", TARGET_WEBSITES, limit = 100000)
-            df = get_all_paragraphs(df)
+            df = get_maintext_and_title(df)
             pd.DataFrame(df).to_csv("./crawl_csv/crawl_"+str(all_index)+'_'+str(index)+".csv")
             results = dataframe_to_json(df,all_index, index)  #transform crawled data to json layout
 
