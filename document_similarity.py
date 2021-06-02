@@ -1,32 +1,41 @@
 from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.metrics.pairwise import euclidean_distances
 import pandas as pd
 
-PATH = 'crawl_csv\crawl_0_0.csv'
+PATH = '.\crawl_json\crawl_0_0.json'
 
 def load_data_from_csv():
-    df = pd.read_csv(PATH)
-    print(df.head(1))
-    print('\n')
+    df = pd.read_json(PATH, orient='index')
+    #print(df.head(1))
+    #print('\n')
     return df
 
-def get_title_list(df):
-    title_list = df['title'].tolist()
-    return title_list
+def get_text_list(df, attribute):
+    text_list = df[attribute].tolist()
+    return text_list
 
-def get_features(title_list):
+def get_features(text_list):
     vectorizer = CountVectorizer()
-    features = vectorizer.fit_transform(title_list).todense()
+    features = vectorizer.fit_transform(text_list).todense()
     print(vectorizer.vocabulary_)
     print('\n')
     return features
 
 def main():
     df = load_data_from_csv()
-    title_list = get_title_list(df)
-    features = get_features(title_list)
-    for i, f in enumerate(features):
-        print(f'Index: {i} distance: {euclidean_distances(features[2], f)}')
-         
+    title_list = get_text_list(df, "title")
+    maintext_list = get_text_list(df, "maintext")
+    features_titles = get_features(title_list)
+    features_maintext = get_features(maintext_list)
+    print("_______________TITLE COMPARISON _____________\n")
+    for i, f in enumerate(features_titles):
+        print(f'EUCLIDIAN - Index: {i} distance: {euclidean_distances(features_titles[2], f)}')
+
+    print("_______________MAINTEXT COMPARISON _____________\n")
+    for i, f in enumerate(features_maintext):
+        print(f'COSINE - Index: {i} distance: {cosine_similarity(features_maintext[2], f)}')
+
+
 if __name__ == '__main__':
     main()

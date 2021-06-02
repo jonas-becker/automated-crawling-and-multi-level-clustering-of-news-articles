@@ -1,0 +1,172 @@
+\hypertarget{namespacecrawl}{}\doxysection{crawl Namespace Reference}
+\label{namespacecrawl}\index{crawl@{crawl}}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{namespacecrawl_a8924eeef33384b522dfbe0fe4c3fe459}{check\+\_\+url\+\_\+for\+\_\+data}} (url)
+\item 
+def \mbox{\hyperlink{namespacecrawl_a8094ba03bdddfda58dd5258f939a76a0}{process\+\_\+warc}} (file\+\_\+name, target\+\_\+websites, limit=1000)
+\item 
+def \mbox{\hyperlink{namespacecrawl_a53618b20cd42ffeed3f999043e13c830}{format\+\_\+string}} (text)
+\item 
+\mbox{\Hypertarget{namespacecrawl_a939cd6bdb8d2013ce2f2166e22c77119}\label{namespacecrawl_a939cd6bdb8d2013ce2f2166e22c77119}} 
+def {\bfseries format\+\_\+url} (text)
+\item 
+def \mbox{\hyperlink{namespacecrawl_aa3cb8e91347f51d4e49bc13431a7ffa5}{get\+\_\+domain}} (text)
+\item 
+def \mbox{\hyperlink{namespacecrawl_a026652eca6bc05882fed2f640eb22e72}{get\+\_\+description}} (text, word\+Count)
+\item 
+def \mbox{\hyperlink{namespacecrawl_a7fe0bd82815e5c3d5f91180a9fb56ee7}{dataframe\+\_\+to\+\_\+json}} (df, all\+\_\+index, index)
+\item 
+def \mbox{\hyperlink{namespacecrawl_a3fb8066560dd9732c4d1ba20e206db0c}{get\+\_\+paragraphs}} (soup)
+\item 
+def \mbox{\hyperlink{namespacecrawl_a15b3917ed479f155317a68273870c8b4}{check\+\_\+urls\+\_\+for\+\_\+data}} ()
+\item 
+def \mbox{\hyperlink{namespacecrawl_a54f9f06b8ae9c5f505094f8b30ad62d1}{download\+\_\+archives}} (warc\+\_\+paths, all\+\_\+index)
+\item 
+def \mbox{\hyperlink{namespacecrawl_a713841257ccf1b1757339d7db78f5021}{get\+\_\+maintext\+\_\+and\+\_\+title}} (df)
+\item 
+def \mbox{\hyperlink{namespacecrawl_a52a59ae843de0002f3f89caf7b4e9901}{get\+\_\+warc\+\_\+paths}} (archive\+Files)
+\item 
+\mbox{\Hypertarget{namespacecrawl_a95d9c63ebf58c681a914180f37825a8f}\label{namespacecrawl_a95d9c63ebf58c681a914180f37825a8f}} 
+def {\bfseries main} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{namespacecrawl_a4f755dc56567d64c99711d9ce38c7d72}\label{namespacecrawl_a4f755dc56567d64c99711d9ce38c7d72}} 
+list {\bfseries TARGET\+\_\+\+WEBSITES} = \mbox{[}\char`\"{}cnn.\+com\char`\"{}, \char`\"{}washingtonpost.\+com\char`\"{}, \char`\"{}nytimes.\+com\char`\"{}, \char`\"{}abcnews.\+go.\+com\char`\"{}, \char`\"{}bbc.\+com\char`\"{}, \char`\"{}cbsnews.\+com\char`\"{}, \char`\"{}chicagotribune.\+com\char`\"{}, \char`\"{}foxnews.\+com\char`\"{}, \char`\"{}huffpost.\+com\char`\"{}, \char`\"{}latimes.\+com\char`\"{}, \char`\"{}nbcnews.\+com\char`\"{}, \char`\"{}npr.\+org/sections/news\char`\"{}, \char`\"{}politico.\+com\char`\"{}, \char`\"{}reuters.\+com\char`\"{}, \char`\"{}slate.\+com\char`\"{}, \char`\"{}theguardian.\+com\char`\"{}, \char`\"{}wsj.\+com\char`\"{}, \char`\"{}usatoday.\+com\char`\"{}\mbox{]}
+\item 
+\mbox{\Hypertarget{namespacecrawl_a0ac7ea8bd65eda43a21308f67cfba596}\label{namespacecrawl_a0ac7ea8bd65eda43a21308f67cfba596}} 
+list {\bfseries TEST\+\_\+\+TARGETS} = \mbox{[}\char`\"{}cnn.\+com\char`\"{}, \char`\"{}washingtonpost.\+com\char`\"{}\mbox{]}
+\item 
+\mbox{\Hypertarget{namespacecrawl_aab3c27ba7c0c1eeb8023d73bf37faa6e}\label{namespacecrawl_aab3c27ba7c0c1eeb8023d73bf37faa6e}} 
+string {\bfseries INDEX} = \textquotesingle{}2020-\/16\textquotesingle{}
+\item 
+\mbox{\Hypertarget{namespacecrawl_aee1ddd1960ef80763c8446399d4fb09a}\label{namespacecrawl_aee1ddd1960ef80763c8446399d4fb09a}} 
+int {\bfseries MAX\+\_\+\+ARCHIVE\+\_\+\+FILES\+\_\+\+PER\+\_\+\+URL} = 1
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}@package docstring
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacecrawl_a8924eeef33384b522dfbe0fe4c3fe459}\label{namespacecrawl_a8924eeef33384b522dfbe0fe4c3fe459}} 
+\index{crawl@{crawl}!check\_url\_for\_data@{check\_url\_for\_data}}
+\index{check\_url\_for\_data@{check\_url\_for\_data}!crawl@{crawl}}
+\doxysubsubsection{\texorpdfstring{check\_url\_for\_data()}{check\_url\_for\_data()}}
+{\footnotesize\ttfamily def crawl.\+check\+\_\+url\+\_\+for\+\_\+data (\begin{DoxyParamCaption}\item[{}]{url }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Check if JSON-Object is available under the URL.
+@param url: URL of TEST_TARGETS
+@return: returns nothing
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespacecrawl_a15b3917ed479f155317a68273870c8b4}\label{namespacecrawl_a15b3917ed479f155317a68273870c8b4}} 
+\index{crawl@{crawl}!check\_urls\_for\_data@{check\_urls\_for\_data}}
+\index{check\_urls\_for\_data@{check\_urls\_for\_data}!crawl@{crawl}}
+\doxysubsubsection{\texorpdfstring{check\_urls\_for\_data()}{check\_urls\_for\_data()}}
+{\footnotesize\ttfamily def crawl.\+check\+\_\+urls\+\_\+for\+\_\+data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Get the archive files including their WARC-Paths for the given TEST_TARGETS.
+@return: all archive files that are fitting with the TEST_TARGETS
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespacecrawl_a7fe0bd82815e5c3d5f91180a9fb56ee7}\label{namespacecrawl_a7fe0bd82815e5c3d5f91180a9fb56ee7}} 
+\index{crawl@{crawl}!dataframe\_to\_json@{dataframe\_to\_json}}
+\index{dataframe\_to\_json@{dataframe\_to\_json}!crawl@{crawl}}
+\doxysubsubsection{\texorpdfstring{dataframe\_to\_json()}{dataframe\_to\_json()}}
+{\footnotesize\ttfamily def crawl.\+dataframe\+\_\+to\+\_\+json (\begin{DoxyParamCaption}\item[{}]{df,  }\item[{}]{all\+\_\+index,  }\item[{}]{index }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Pushes all data from the dataframe into a JSON-Layout.
+@param df: Dataframe
+@param all_index: The index of the crawled test targets
+@param index: The index of the crawled WARC-File per test target
+@return: returns nothing
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespacecrawl_a54f9f06b8ae9c5f505094f8b30ad62d1}\label{namespacecrawl_a54f9f06b8ae9c5f505094f8b30ad62d1}} 
+\index{crawl@{crawl}!download\_archives@{download\_archives}}
+\index{download\_archives@{download\_archives}!crawl@{crawl}}
+\doxysubsubsection{\texorpdfstring{download\_archives()}{download\_archives()}}
+{\footnotesize\ttfamily def crawl.\+download\+\_\+archives (\begin{DoxyParamCaption}\item[{}]{warc\+\_\+paths,  }\item[{}]{all\+\_\+index }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Downloads the archives from the given URLs.
+@param warc_paths: The file path of the WARC-Files we want to download
+@param all_index: The index of the TEST_TARGETS
+@return: returns nothing
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespacecrawl_a53618b20cd42ffeed3f999043e13c830}\label{namespacecrawl_a53618b20cd42ffeed3f999043e13c830}} 
+\index{crawl@{crawl}!format\_string@{format\_string}}
+\index{format\_string@{format\_string}!crawl@{crawl}}
+\doxysubsubsection{\texorpdfstring{format\_string()}{format\_string()}}
+{\footnotesize\ttfamily def crawl.\+format\+\_\+string (\begin{DoxyParamCaption}\item[{}]{text }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Filters special characters and replaces them.
+@param text: to format text
+@return: returns formatted text
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespacecrawl_a026652eca6bc05882fed2f640eb22e72}\label{namespacecrawl_a026652eca6bc05882fed2f640eb22e72}} 
+\index{crawl@{crawl}!get\_description@{get\_description}}
+\index{get\_description@{get\_description}!crawl@{crawl}}
+\doxysubsubsection{\texorpdfstring{get\_description()}{get\_description()}}
+{\footnotesize\ttfamily def crawl.\+get\+\_\+description (\begin{DoxyParamCaption}\item[{}]{text,  }\item[{}]{word\+Count }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Get the description for a specific article maintext.
+@param text: The text to extract the description from
+@param wordCount: The maximum amount of words a description should contain
+@return: the extracted description
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespacecrawl_aa3cb8e91347f51d4e49bc13431a7ffa5}\label{namespacecrawl_aa3cb8e91347f51d4e49bc13431a7ffa5}} 
+\index{crawl@{crawl}!get\_domain@{get\_domain}}
+\index{get\_domain@{get\_domain}!crawl@{crawl}}
+\doxysubsubsection{\texorpdfstring{get\_domain()}{get\_domain()}}
+{\footnotesize\ttfamily def crawl.\+get\+\_\+domain (\begin{DoxyParamCaption}\item[{}]{text }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Extract the domain from a given URL.
+@param text: The text url to get the domain from
+@return: the extracted domain 
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespacecrawl_a713841257ccf1b1757339d7db78f5021}\label{namespacecrawl_a713841257ccf1b1757339d7db78f5021}} 
+\index{crawl@{crawl}!get\_maintext\_and\_title@{get\_maintext\_and\_title}}
+\index{get\_maintext\_and\_title@{get\_maintext\_and\_title}!crawl@{crawl}}
+\doxysubsubsection{\texorpdfstring{get\_maintext\_and\_title()}{get\_maintext\_and\_title()}}
+{\footnotesize\ttfamily def crawl.\+get\+\_\+maintext\+\_\+and\+\_\+title (\begin{DoxyParamCaption}\item[{}]{df }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Extract the maintext (body) and the title of the articles.
+@param df: Dataframe
+@return: The dataframe with extracted maintext and title
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespacecrawl_a3fb8066560dd9732c4d1ba20e206db0c}\label{namespacecrawl_a3fb8066560dd9732c4d1ba20e206db0c}} 
+\index{crawl@{crawl}!get\_paragraphs@{get\_paragraphs}}
+\index{get\_paragraphs@{get\_paragraphs}!crawl@{crawl}}
+\doxysubsubsection{\texorpdfstring{get\_paragraphs()}{get\_paragraphs()}}
+{\footnotesize\ttfamily def crawl.\+get\+\_\+paragraphs (\begin{DoxyParamCaption}\item[{}]{soup }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Extracts all paragraphs of a soup object
+@param soup: Soup-object
+@return: Returns all paragraphs except the last one because it is useless
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespacecrawl_a52a59ae843de0002f3f89caf7b4e9901}\label{namespacecrawl_a52a59ae843de0002f3f89caf7b4e9901}} 
+\index{crawl@{crawl}!get\_warc\_paths@{get\_warc\_paths}}
+\index{get\_warc\_paths@{get\_warc\_paths}!crawl@{crawl}}
+\doxysubsubsection{\texorpdfstring{get\_warc\_paths()}{get\_warc\_paths()}}
+{\footnotesize\ttfamily def crawl.\+get\+\_\+warc\+\_\+paths (\begin{DoxyParamCaption}\item[{}]{archive\+Files }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Get a specific amount of WARC-Paths from each archive.
+@param archiveFiles: The archive files where all WARC-Files are listed in
+@return: The file paths of the WARC-Files we want to download
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespacecrawl_a8094ba03bdddfda58dd5258f939a76a0}\label{namespacecrawl_a8094ba03bdddfda58dd5258f939a76a0}} 
+\index{crawl@{crawl}!process\_warc@{process\_warc}}
+\index{process\_warc@{process\_warc}!crawl@{crawl}}
+\doxysubsubsection{\texorpdfstring{process\_warc()}{process\_warc()}}
+{\footnotesize\ttfamily def crawl.\+process\+\_\+warc (\begin{DoxyParamCaption}\item[{}]{file\+\_\+name,  }\item[{}]{target\+\_\+websites,  }\item[{}]{limit = {\ttfamily 1000} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Extracts Data from WARC-File and writes it into a Dataframe.
+@param file_name: Name of WARC-File
+@param target_websites: The websites that are worth saving to us
+@param limit: The maximum amount of articles extracted from the WARC-File
+@return: returns Dataframe
+\end{DoxyVerb}
+ 

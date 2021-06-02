@@ -1,3 +1,5 @@
+"""@package docstring
+"""
 from numpy import tile
 import pandas as pd
 import re
@@ -23,8 +25,8 @@ MAX_ARCHIVE_FILES_PER_URL = 1   #change to increase or decrease the amount of cr
 def check_url_for_data(url):
     '''
     Check if JSON-Object is available under the URL.
-    :param url: URL of TEST_TARGETS
-    :return: returns nothing
+    @param url: URL of TEST_TARGETS
+    @return: returns nothing
     '''
     try:
         with urllib.request.urlopen('https://index.commoncrawl.org/CC-MAIN-'+ INDEX +'-index?url='+url+'&output=json') as url:
@@ -38,10 +40,10 @@ def check_url_for_data(url):
 def process_warc(file_name, target_websites, limit=1000):    #unpack the gz and process it
     '''
     Extracts Data from WARC-File and writes it into a Dataframe.
-    :param file_name: Name of WARC-File
-    :param target_websites: The websites that are worth saving to us
-    :param limit: The maximum amount of articles extracted from the WARC-File
-    :return: returns Dataframe
+    @param file_name: Name of WARC-File
+    @param target_websites: The websites that are worth saving to us
+    @param limit: The maximum amount of articles extracted from the WARC-File
+    @return: returns Dataframe
     '''
     warc_file = warc.open(file_name, 'rb')
     t0 = time()
@@ -86,8 +88,8 @@ def process_warc(file_name, target_websites, limit=1000):    #unpack the gz and 
 def format_string(text):    #mix the soup until it has a nice taste
     '''
     Filters special characters and replaces them.
-    :param text: to format text
-    :return: returns formatted text
+    @param text: to format text
+    @return: returns formatted text
     '''
     regex = re.compile(r'[\n\r\t\"]')
     text = regex.sub("", text)  #remove special characters
@@ -104,8 +106,8 @@ def format_url(text):
 def get_domain(text):
     '''
     Extract the domain from a given URL.
-    :param text: The text url to get the domain from
-    :return: the extracted domain 
+    @param text: The text url to get the domain from
+    @return: the extracted domain 
     '''
     domain = urlparse(text).netloc
     return domain
@@ -113,9 +115,9 @@ def get_domain(text):
 def get_description(text, wordCount):
     '''
     Get the description for a specific article maintext.
-    :param text: The text to extract the description from
-    :param wordCount: The maximum amount of words a description should contain
-    :return: the extracted description
+    @param text: The text to extract the description from
+    @param wordCount: The maximum amount of words a description should contain
+    @return: the extracted description
     '''
     desc = ' '.join(text.split()[:wordCount])
     if (len(desc) < 5):
@@ -128,18 +130,19 @@ def get_description(text, wordCount):
 def dataframe_to_json(df, all_index, index):
     '''
     Pushes all data from the dataframe into a JSON-Layout.
-    :param df: Dataframe
-    :param all_index: The index of the crawled test targets
-    :param index: The index of the crawled WARC-File per test target
-    :return: returns nothing
+    @param df: Dataframe
+    @param all_index: The index of the crawled test targets
+    @param index: The index of the crawled WARC-File per test target
+    @return: returns nothing
     '''
     count = 0
     list_df = []    #the list which will be used to create a dataframe later
 
     print("Handling the crawled data...")
     for i, _ in df.iterrows() :   #use beautiful soup to extract useful text from the crawled html formatted string 
-        list_df.append([None, datetime.now(), datetime.now(), df["date"][i], get_description(df["maintext"][i], 50), None, None, None, get_domain(df["url"][i]), format_string(df["maintext"][i]), format_string(df["title"][i]), None, None, format_url(df["url"][i])])   #append title and text to the list
-        count += 1    
+        if (len(df["maintext"][i].split()) > 100):
+            list_df.append([None, datetime.now(), datetime.now(), df["date"][i], get_description(df["maintext"][i], 50), None, None, None, get_domain(df["url"][i]), format_string(df["maintext"][i]), format_string(df["title"][i]), None, None, format_url(df["url"][i])])   #append title and text to the list
+            count += 1    
 
     results = pd.DataFrame(list_df, columns=["authors", "date_download", "date_modify", "date_publish", "description", "image_url", "language", "localpath", "source_domain", "maintext", "title", "title_page", "title_rss", "url"])  #create a dataframe from the list
     print('Amount of crawled articles: {}'.format(count))
@@ -151,8 +154,8 @@ def dataframe_to_json(df, all_index, index):
 def get_paragraphs(soup):
     '''
     Extracts all paragraphs of a soup object
-    :param soup: Soup-object
-    :return: Returns all paragraphs except the last one because it is useless
+    @param soup: Soup-object
+    @return: Returns all paragraphs except the last one because it is useless
     '''
     result = ""
     for para in soup.find_all("p"):
@@ -162,7 +165,7 @@ def get_paragraphs(soup):
 def check_urls_for_data():
     '''
     Get the archive files including their WARC-Paths for the given TEST_TARGETS.
-    :return: all archive files that are fitting with the TEST_TARGETS
+    @return: all archive files that are fitting with the TEST_TARGETS
     '''
     all_archive_files = []
     
@@ -175,9 +178,9 @@ def check_urls_for_data():
 def download_archives(warc_paths, all_index):
     '''
     Downloads the archives from the given URLs.
-    :param warc_paths: The file path of the WARC-Files we want to download
-    :param all_index: The index of the TEST_TARGETS
-    :return: returns nothing
+    @param warc_paths: The file path of the WARC-Files we want to download
+    @param all_index: The index of the TEST_TARGETS
+    @return: returns nothing
     '''
     for index, _ in enumerate(warc_paths):
         print("Downloading from CommonCrawl: " + warc_paths[index])
@@ -190,11 +193,12 @@ def download_archives(warc_paths, all_index):
 def get_maintext_and_title(df):
     '''
     Extract the maintext (body) and the title of the articles.
-    :param df: Dataframe
-    :return: The dataframe with extracted maintext and title
+    @param df: Dataframe
+    @return: The dataframe with extracted maintext and title
     '''
     paragraphs = []
     titles = []
+    langs = []
 
     for element in df["maintext"]: 
         soup = BeautifulSoup(element, 'html.parser')
@@ -209,8 +213,8 @@ def get_maintext_and_title(df):
 def get_warc_paths(archiveFiles):
     '''
     Get a specific amount of WARC-Paths from each archive.
-    :param archiveFiles: The archive files where all WARC-Files are listed in
-    :return: The file paths of the WARC-Files we want to download
+    @param archiveFiles: The archive files where all WARC-Files are listed in
+    @return: The file paths of the WARC-Files we want to download
     '''
     warc_paths = []
 
