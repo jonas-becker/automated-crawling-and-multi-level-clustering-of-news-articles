@@ -15,6 +15,7 @@ import warc
 import boto3
 from botocore.handlers import disable_signing
 from io import BytesIO
+from langdetect import detect
 
 TARGET_WEBSITES = ["cnn.com", "washingtonpost.com", "nytimes.com", "abcnews.go.com", "bbc.com", "cbsnews.com", "chicagotribune.com", "foxnews.com", "huffpost.com", "latimes.com", "nbcnews.com", "npr.org/sections/news", "politico.com", "reuters.com", "slate.com", "theguardian.com", "wsj.com", "usatoday.com"]  #these trings will be compared with the URL and if matched added to datasets. You may add a specific path you are looking for
 TEST_TARGETS = ["cnn.com", "washingtonpost.com"]
@@ -36,6 +37,19 @@ def check_url_for_data(url):
             return resp
     except Exception as e:
         print(e)
+
+def get_language(html):
+    '''
+    Get language from HTML-body
+    @param html:
+    @return: Returns the language
+    '''
+    soup = BeautifulSoup(html, 'html.parser')
+    lang = soup.html['lang']
+    if lang is None:
+        return 'default'
+    else:
+        return lang
           
 def process_warc(file_name, target_websites, limit=1000):    #unpack the gz and process it
     '''
@@ -52,6 +66,7 @@ def process_warc(file_name, target_websites, limit=1000):    #unpack the gz and 
     header_list = []
     html_content = []
     date_list = []
+    lang_list = []
 
     for record in warc_file:
         #print(record['WARC-Date'])
@@ -63,6 +78,7 @@ def process_warc(file_name, target_websites, limit=1000):    #unpack the gz and 
         try:
             header, html = payload.split(b'\r\n\r\n', maxsplit=1)
             html = html.strip()
+
         except:
             continue
         if url is None or payload is None or html == b'':
@@ -75,8 +91,9 @@ def process_warc(file_name, target_websites, limit=1000):    #unpack the gz and 
                         header_list.append(header)
                         url_list.append(url)
                         date_list.append(record['WARC-Date'])
+                        lang_list.append(get_language(html))
                         print("Found matching data for " + url)
-                df = pd.DataFrame(list(zip(html_content, header_list, url_list, date_list)), columns = ['maintext','header','url','date'])
+                df = pd.DataFrame(list(zip(html_content, header_list, url_list, date_list, lang_list)), columns = ['maintext','header','url','date', 'lang'])
             except Exception as e:
                 print(e)
                 continue
@@ -141,10 +158,10 @@ def dataframe_to_json(df, all_index, index):
     print("Handling the crawled data...")
     for i, _ in df.iterrows() :   #use beautiful soup to extract useful text from the crawled html formatted string 
         if (len(df["maintext"][i].split()) > 100):
-            list_df.append([None, datetime.now(), datetime.now(), df["date"][i], get_description(df["maintext"][i], 50), None, None, None, get_domain(df["url"][i]), format_string(df["maintext"][i]), format_string(df["title"][i]), None, None, format_url(df["url"][i])])   #append title and text to the list
+            list_df.append([None, datetime.now(), datetime.now(), df["date"][i], get_description(df["maintext"][i], 50), None, df["lang"][i], None, get_domain(df["url"][i]), format_string(df["maintext"][i]), format_string(df["title"][i]), None, None, format_url(df["url"][i]), df["detected_lang"][i]])   #append title and text to the list
             count += 1    
 
-    results = pd.DataFrame(list_df, columns=["authors", "date_download", "date_modify", "date_publish", "description", "image_url", "language", "localpath", "source_domain", "maintext", "title", "title_page", "title_rss", "url"])  #create a dataframe from the list
+    results = pd.DataFrame(list_df, columns=["authors", "date_download", "date_modify", "date_publish", "description", "image_url", "language", "localpath", "source_domain", "maintext", "title", "title_page", "title_rss", "url", "detected_lang"])  #create a dataframe from the list
     print('Amount of crawled articles: {}'.format(count))
 
     data = results.to_json("./crawl_json/crawl_"+str(all_index)+'_'+str(index)+".json", orient='index', indent=2, date_format='iso') #save the formatted texts (html excluded) to a json-layout 
@@ -190,6 +207,13 @@ def download_archives(warc_paths, all_index):
         if os.path.isfile("crawl_data/crawled_data_"+str(all_index)+'_'+str(index)+".warc.gz") is False: 
             resource.meta.client.download_file('commoncrawl', warc_paths[index], "./crawl_data/crawled_data_"+str(all_index)+'_'+str(index)+".warc.gz")
 
+def get_detected_lang(text):
+    try:
+        lang = detect(text)
+    except:
+        lang = 'default'
+    return lang
+
 def get_maintext_and_title(df):
     '''
     Extract the maintext (body) and the title of the articles.
@@ -200,14 +224,16 @@ def get_maintext_and_title(df):
     titles = []
     langs = []
 
-    for element in df["maintext"]: 
+    for i, element in enumerate(df["maintext"]): 
         soup = BeautifulSoup(element, 'html.parser')
         if (len(element) != 0 and soup.title != None):
             paragraphs.append(get_paragraphs(soup))
+            langs.append(get_detected_lang(paragraphs[i]))
             titles.append(soup.title.text)
 
     df["maintext"] = paragraphs
     df["title"] = titles
+    df['detected_lang']  = langs
     return df
 
 def get_warc_paths(archiveFiles):
