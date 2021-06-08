@@ -17,7 +17,7 @@ from botocore.handlers import disable_signing
 from langdetect import detect
 
 TARGET_WEBSITES = [".cnn.com", ".washingtonpost.com", ".nytimes.com", ".abcnews.go.com", ".bbc.com", ".cbsnews.com", ".chicagotribune.com", ".foxnews.com", ".huffpost.com", ".latimes.com", ".nbcnews.com", ".npr.org/sections/news", ".politico.com", ".reuters.com", ".slate.com", ".theguardian.com", ".wsj.com", ".usatoday.com", ".breitbart.com", ".nypost.com", ".cbslocal.com", ".nydailynews.com", ".newsweek.com", ".boston.com", ".denverpost.com", ".seattletimes.com", ".miamiherald.com", ".observer.com", ".washingtontimes.com", ".newsday.com", ".theintercept.com"]  #these trings will be compared with the URL and if matched added to datasets. You may add a specific path you are looking for
-TEST_TARGETS = ["cnn.com", ".washingtonpost.com"]
+TEST_TARGETS = ["nytimes.com", ".washingtonpost.com"]
 INDEXES = ['2020-16', "2021-21"]    #The indexes from commoncrawl
 MAX_ARCHIVE_FILES_PER_URL = 2   #Change to increase or decrease the amount of crawled data per URL (Estimated size per archive: 1.2 GB)
 MINIMUM_MAINTEXT_LENGTH = 200
@@ -52,7 +52,7 @@ def check_urls_for_data():
         for url in TEST_TARGETS:
             print("ONE")
             archiveFiles = check_url_for_data(url, i)  #get the paths to all archives we may want to download
-            archiveFiles = [file for file in archiveFiles if not "crawldiagnostics" in file["filename"]]    #exclude diagnostic files because they do not include useful data
+            archiveFiles = [file for file in archiveFiles if not ("crawldiagnostics" in file["filename"] or "robotstxt" in file["filename"])]    #exclude diagnostic and robotstxt files because they do not include useful data
             all_archive_files.append(archiveFiles)
 
     return all_archive_files
@@ -162,7 +162,7 @@ def dataframe_to_json(df, all_index, index):
             count += 1    
 
     results = pd.DataFrame(list_df, columns=["authors", "date_download", "date_modify", "date_publish", "description", "image_url", "language", "localpath", "source_domain", "maintext", "title", "title_page", "title_rss", "url"])  #create a dataframe from the list
-    print('Amount of crawled articles: {}'.format(count))
+    print('Amount of extracted articles: {}'.format(count))
 
     with open(f"./crawl_json/crawl_{str(all_index)}_{str(index)}.json", 'w', encoding='utf-8') as f:
         f.write(ujson.dumps(results.to_dict('index'), indent=4, ensure_ascii=False, escape_forward_slashes=False))
@@ -223,6 +223,11 @@ def get_maintext_and_title(df):
             paragraphs.append(get_paragraphs(soup))
             langs.append(get_detected_lang(paragraphs[i]))
             titles.append(soup.title.text)
+        else:
+            paragraphs.append("Undefined")
+            langs.append("Undefined")
+            titles.append("Undefined")
+        
 
     df["maintext"] = paragraphs
     df["title"] = titles
