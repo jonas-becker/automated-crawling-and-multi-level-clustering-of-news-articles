@@ -202,7 +202,7 @@ def download_archives(warc_paths, all_index):
             nonlocal downloaded
             downloaded += chunk
             done = int(50 * downloaded / total_length)
-            sys.stdout.write("\r[%s%s]" % ('=' * done, ' ' * (50-done)))
+            sys.stdout.write("\r[%s%s] %s MB / %s MB" % ('=' * done, ' ' * (50-done), str(round(downloaded/100000)), str(round(total_length/100000))))
             sys.stdout.flush()
 
         if os.path.isfile(f"crawl_data/crawled_data_{str(all_index)}_{str(index)}.warc.gz") is False: 
