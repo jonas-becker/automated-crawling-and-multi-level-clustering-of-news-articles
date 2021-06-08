@@ -9,6 +9,7 @@ import ujson
 import os.path
 import warc
 import boto3
+import sys
 from bs4 import BeautifulSoup
 from datetime import datetime
 from urllib.parse import urlparse
@@ -185,15 +186,27 @@ def download_archives(warc_paths, all_index):
     Downloads the archives from the given URLs.
     @param warc_paths: The file path of the WARC-Files we want to download
     @param all_index: The index of the TEST_TARGETS
-    @return: returns nothing
+    @return: returns nothing^
     '''
+
     for index, _ in enumerate(warc_paths):
         print("Downloading from CommonCrawl: " + warc_paths[index])
         resource = boto3.resource('s3')
+        bucket = resource.Bucket("commoncrawl")
         resource.meta.client.meta.events.register('choose-signer.s3.*', disable_signing)
-        bucket = resource.Bucket('commoncrawl')
+        meta_data = resource.meta.client.head_object(Bucket="commoncrawl", Key=warc_paths[index])
+        total_length = int(meta_data.get('ContentLength', 0))
+        downloaded = 0
+
+        def progress(chunk):    #Progress Bar
+            nonlocal downloaded
+            downloaded += chunk
+            done = int(50 * downloaded / total_length)
+            sys.stdout.write("\r[%s%s]" % ('=' * done, ' ' * (50-done)))
+            sys.stdout.flush()
+
         if os.path.isfile(f"crawl_data/crawled_data_{str(all_index)}_{str(index)}.warc.gz") is False: 
-            resource.meta.client.download_file('commoncrawl', warc_paths[index], f"./crawl_data/crawled_data_{str(all_index)}_{str(index)}.warc.gz")
+            resource.meta.client.download_file('commoncrawl', warc_paths[index], f"./crawl_data/crawled_data_{str(all_index)}_{str(index)}.warc.gz", Callback=progress)
 
 def get_detected_lang(text):
     '''
@@ -247,6 +260,8 @@ def get_warc_paths(archiveFiles):
 
     print("\nAdded " + str(len(warc_paths)) + " archives to download.")
     return warc_paths
+
+
 
 ################################################################################################################
 
