@@ -3,41 +3,59 @@
 import pandas as pd
 import re
 import urllib
-from urllib.parse import urlparse
 import urllib.request
 import json
 import ujson
-from bs4 import BeautifulSoup
-from datetime import datetime
-from time import time
 import os.path
 import warc
 import boto3
+from bs4 import BeautifulSoup
+from datetime import datetime
+from urllib.parse import urlparse
+from time import time
 from botocore.handlers import disable_signing
 from langdetect import detect
 
 TARGET_WEBSITES = [".cnn.com", ".washingtonpost.com", ".nytimes.com", ".abcnews.go.com", ".bbc.com", ".cbsnews.com", ".chicagotribune.com", ".foxnews.com", ".huffpost.com", ".latimes.com", ".nbcnews.com", ".npr.org/sections/news", ".politico.com", ".reuters.com", ".slate.com", ".theguardian.com", ".wsj.com", ".usatoday.com", ".breitbart.com", ".nypost.com", ".cbslocal.com", ".nydailynews.com", ".newsweek.com", ".boston.com", ".denverpost.com", ".seattletimes.com", ".miamiherald.com", ".observer.com", ".washingtontimes.com", ".newsday.com", ".theintercept.com"]  #these trings will be compared with the URL and if matched added to datasets. You may add a specific path you are looking for
-TEST_TARGETS = ["cnn.com", "washingtonpost.com"]
-INDEX = '2020-16'
-MAX_ARCHIVE_FILES_PER_URL = 1   #change to increase or decrease the amount of crawled data per URL (Estimated size per archive: 1.2 GB)
+TEST_TARGETS = ["cnn.com", ".washingtonpost.com"]
+INDEXES = ['2020-16', "2021-21"]    #The indexes from commoncrawl
+MAX_ARCHIVE_FILES_PER_URL = 2   #Change to increase or decrease the amount of crawled data per URL (Estimated size per archive: 1.2 GB)
 MINIMUM_MAINTEXT_LENGTH = 200
 DESIRED_LANGUAGE = "en"    #Set to None if all languages are desired.
 
 
-def check_url_for_data(url):
+def check_url_for_data(url, i):
     '''
-    Check if JSON-Object is available under the URL.
+    Check if JSON-Object is available under the URL for a specific CommonCrawl index.
     @param url: URL of TEST_TARGETS
+    @param i: The CommonCrawl index
     @return: returns nothing
     '''
     try:
-        with urllib.request.urlopen('https://index.commoncrawl.org/CC-MAIN-'+ INDEX +'-index?url='+url+'&output=json') as url:
+        with urllib.request.urlopen(f'https://index.commoncrawl.org/CC-MAIN-{i}-index?url={url}&output=json') as url:
             resp = []
             for element in url:
                 resp.append(json.loads(element))
             return resp
     except Exception as e:
+        print("Could not gather data from the index: ", i)
         print(e)
+
+def check_urls_for_data():
+    '''
+    Get the archive files including their WARC-Paths for the given TEST_TARGETS.
+    @return: all archive files that are fitting with the TEST_TARGETS
+    '''
+    all_archive_files = []
+    
+    for i in INDEXES:
+        for url in TEST_TARGETS:
+            print("ONE")
+            archiveFiles = check_url_for_data(url, i)  #get the paths to all archives we may want to download
+            archiveFiles = [file for file in archiveFiles if not "crawldiagnostics" in file["filename"]]    #exclude diagnostic files because they do not include useful data
+            all_archive_files.append(archiveFiles)
+
+    return all_archive_files
           
 def process_warc(file_name, target_websites, limit=1000):    #unpack the gz and process it
     '''
@@ -149,7 +167,7 @@ def dataframe_to_json(df, all_index, index):
     with open(f"./crawl_json/crawl_{str(all_index)}_{str(index)}.json", 'w', encoding='utf-8') as f:
         f.write(ujson.dumps(results.to_dict('index'), indent=4, ensure_ascii=False, escape_forward_slashes=False))
 
-    print("Crawled data of ./crawl_data/crawled_data_"+str(all_index)+'_'+str(index)+".warc.gz has been written to ./crawl_json/crawl_"+str(all_index)+'_'+str(index)+".json") 
+    print(f"Crawled data of ./crawl_data/crawled_data_{str(all_index)+'_'+str(index)}.warc.gz has been written to ./crawl_json/crawl_{str(all_index)}_{str(index)}.json") 
 
 def get_paragraphs(soup):
     '''
@@ -161,19 +179,6 @@ def get_paragraphs(soup):
     for para in soup.find_all("p"):
         result += para.get_text() + " "
     return result[:-1]
-
-def check_urls_for_data():
-    '''
-    Get the archive files including their WARC-Paths for the given TEST_TARGETS.
-    @return: all archive files that are fitting with the TEST_TARGETS
-    '''
-    all_archive_files = []
-    
-    for url in TEST_TARGETS:
-        archiveFiles = check_url_for_data(url)  #get the paths to all archives we may want to download
-        archiveFiles = [file for file in archiveFiles if not "crawldiagnostics" in file["filename"]]    #exclude diagnostic files because they do not include useful data
-        all_archive_files.append(archiveFiles)
-    return all_archive_files
 
 def download_archives(warc_paths, all_index):
     '''
@@ -187,8 +192,8 @@ def download_archives(warc_paths, all_index):
         resource = boto3.resource('s3')
         resource.meta.client.meta.events.register('choose-signer.s3.*', disable_signing)
         bucket = resource.Bucket('commoncrawl')
-        if os.path.isfile("crawl_data/crawled_data_"+str(all_index)+'_'+str(index)+".warc.gz") is False: 
-            resource.meta.client.download_file('commoncrawl', warc_paths[index], "./crawl_data/crawled_data_"+str(all_index)+'_'+str(index)+".warc.gz")
+        if os.path.isfile(f"crawl_data/crawled_data_{str(all_index)}_{str(index)}.warc.gz") is False: 
+            resource.meta.client.download_file('commoncrawl', warc_paths[index], f"./crawl_data/crawled_data_{str(all_index)}_{str(index)}.warc.gz")
 
 def get_detected_lang(text):
     '''
@@ -241,17 +246,19 @@ def get_warc_paths(archiveFiles):
 ################################################################################################################
 
 def main():
+
     all_archiveFiles = check_urls_for_data()
     for all_index, archiveFiles in enumerate(all_archiveFiles):
         warc_paths = get_warc_paths(archiveFiles)
+        print(warc_paths)
         download_archives(warc_paths, all_index)
 
         for index, _ in enumerate(warc_paths):
-            print("Processing ./crawl_data/crawled_data_"+str(all_index)+'_'+str(index)+".warc.gz...")
-            df = process_warc("./crawl_data/crawled_data_"+str(all_index)+'_'+str(index)+".warc.gz", TARGET_WEBSITES, limit = 100000)
+            print(f"Processing ./crawl_data/crawled_data_{str(all_index)}_{str(index)}.warc.gz...")
+            df = process_warc(f"./crawl_data/crawled_data_{str(all_index)}_{str(index)}.warc.gz", TARGET_WEBSITES, limit = 100000)
             df = get_maintext_and_title(df)
-            pd.DataFrame(df).to_csv("./crawl_csv/crawl_"+str(all_index)+'_'+str(index)+".csv")
-            results = dataframe_to_json(df,all_index, index)  #transform crawled data to json layout
+            pd.DataFrame(df).to_csv(f"./crawl_csv/crawl_{str(all_index)}_{str(index)}.csv")
+            dataframe_to_json(df,all_index, index)  #transform crawled data to json layout
 
 if __name__ == '__main__':
     main()

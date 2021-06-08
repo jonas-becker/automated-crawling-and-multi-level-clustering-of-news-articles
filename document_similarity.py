@@ -7,7 +7,7 @@ import pandas as pd
 
 PATH = '.\crawl_json\crawl_0_0.json'
 
-def load_data_from_csv():
+def load_data_from_json():
     df = pd.read_json(PATH, orient='index')
     #print(df.head(1))
     #print('\n')
@@ -33,7 +33,7 @@ def tf_idf_vectorizer(corpus):
     return df
 
 def main():
-    df = load_data_from_csv()
+    df = load_data_from_json()
     title_list = get_text_list(df, "title")
     maintext_list = get_text_list(df, "maintext")
     #features_titles = get_features(title_list)
