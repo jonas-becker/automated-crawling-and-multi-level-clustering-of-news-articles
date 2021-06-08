@@ -7,6 +7,7 @@ import urllib
 from urllib.parse import urlparse
 import urllib.request
 import json
+import ujson
 from bs4 import BeautifulSoup
 from datetime import datetime
 from time import time
@@ -66,7 +67,6 @@ def process_warc(file_name, target_websites, limit=1000):    #unpack the gz and 
     header_list = []
     html_content = []
     date_list = []
-    lang_list = []
 
     for record in warc_file:
         #print(record['WARC-Date'])
@@ -91,9 +91,8 @@ def process_warc(file_name, target_websites, limit=1000):    #unpack the gz and 
                         header_list.append(header)
                         url_list.append(url)
                         date_list.append(record['WARC-Date'])
-                        lang_list.append(get_language(html))
                         print("Found matching data for " + url)
-                df = pd.DataFrame(list(zip(html_content, header_list, url_list, date_list, lang_list)), columns = ['maintext','header','url','date', 'lang'])
+                df = pd.DataFrame(list(zip(html_content, header_list, url_list, date_list)), columns = ['maintext','header','url','date'])
             except Exception as e:
                 print(e)
                 continue
@@ -158,14 +157,16 @@ def dataframe_to_json(df, all_index, index):
     print("Handling the crawled data...")
     for i, _ in df.iterrows() :   #use beautiful soup to extract useful text from the crawled html formatted string 
         if (len(df["maintext"][i].split()) > 100):
-            list_df.append([None, datetime.now(), datetime.now(), df["date"][i], get_description(df["maintext"][i], 50), None, df["lang"][i], None, get_domain(df["url"][i]), format_string(df["maintext"][i]), format_string(df["title"][i]), None, None, format_url(df["url"][i]), df["detected_lang"][i]])   #append title and text to the list
+            list_df.append([None, (datetime.now()).strftime("%m/%d/%Y, %H:%M:%S"), (datetime.now()).strftime("%m/%d/%Y, %H:%M:%S"), df["date"][i], get_description(df["maintext"][i], 50), None, df["detected_lang"][i], None, get_domain(df["url"][i]), format_string(df["maintext"][i]), format_string(df["title"][i]), None, None, df["url"][i]])   #append title and text to the list
             count += 1    
 
-    results = pd.DataFrame(list_df, columns=["authors", "date_download", "date_modify", "date_publish", "description", "image_url", "language", "localpath", "source_domain", "maintext", "title", "title_page", "title_rss", "url", "detected_lang"])  #create a dataframe from the list
+    results = pd.DataFrame(list_df, columns=["authors", "date_download", "date_modify", "date_publish", "description", "image_url", "language", "localpath", "source_domain", "maintext", "title", "title_page", "title_rss", "url"])  #create a dataframe from the list
     print('Amount of crawled articles: {}'.format(count))
 
-    data = results.to_json("./crawl_json/crawl_"+str(all_index)+'_'+str(index)+".json", orient='index', indent=2, date_format='iso') #save the formatted texts (html excluded) to a json-layout 
-    
+    #results.to_json("./crawl_json/crawl_"+str(all_index)+'_'+str(index)+".json", orient='index', indent=2, date_format='iso') #save the formatted texts (html excluded) to a json-layout 
+    with open(f"./crawl_json/crawl_{str(all_index)}_{str(index)}.json", 'w', encoding='utf-8') as f:
+        f.write(ujson.dumps(results.to_dict('index'), indent=4, ensure_ascii=False, escape_forward_slashes=False))
+
     print("Crawled data of ./crawl_data/crawled_data_"+str(all_index)+'_'+str(index)+".warc.gz has been written to ./crawl_json/crawl_"+str(all_index)+'_'+str(index)+".json") 
 
 def get_paragraphs(soup):
