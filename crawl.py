@@ -18,9 +18,9 @@ from botocore.handlers import disable_signing
 from langdetect import detect
 
 TARGET_WEBSITES = [".cnn.com", ".washingtonpost.com", ".nytimes.com", ".abcnews.go.com", ".bbc.com", ".cbsnews.com", ".chicagotribune.com", ".foxnews.com", ".huffpost.com", ".latimes.com", ".nbcnews.com", ".npr.org/sections/news", ".politico.com", ".reuters.com", ".slate.com", ".theguardian.com", ".wsj.com", ".usatoday.com", ".breitbart.com", ".nypost.com", ".cbslocal.com", ".nydailynews.com", ".newsweek.com", ".boston.com", ".denverpost.com", ".seattletimes.com", ".miamiherald.com", ".observer.com", ".washingtontimes.com", ".newsday.com", ".theintercept.com"]  #these trings will be compared with the URL and if matched added to datasets. You may add a specific path you are looking for
-TEST_TARGETS = [".nytimes.com", ".washingtonpost.com"]
+TEST_TARGETS = [".nytimes.com", ".washingtonpost.com", ".nytimes.com", ".abcnews.go.com", ".bbc.com", ".cbsnews.com", ".chicagotribune.com", ".foxnews.com", ".huffpost.com", ".latimes.com", ".nbcnews.com", ".npr.org/sections/news", ".politico.com", ".reuters.com", ".slate.com", ".theguardian.com", ".wsj.com", ".usatoday.com", ".breitbart.com", ".nypost.com", ".cbslocal.com", ".nydailynews.com", ".newsweek.com", ".boston.com", ".denverpost.com", ".seattletimes.com", ".miamiherald.com", ".observer.com", ".washingtontimes.com", ".newsday.com", ".theintercept.com"]
 INDEXES = ['2020-16', "2021-21"]    #The indexes from commoncrawl
-MAX_ARCHIVE_FILES_PER_URL = 2   #Change to increase or decrease the amount of crawled data per URL (Estimated size per archive: 1.2 GB)
+MAX_ARCHIVE_FILES_PER_URL = 4   #Change to increase or decrease the amount of crawled data per URL (Estimated size per archive: 1.2 GB)
 MINIMUM_MAINTEXT_LENGTH = 200
 DESIRED_LANGUAGE = "en"    #Set to None if all languages are desired.
 
@@ -277,7 +277,7 @@ def main():
             print(f"Processing ./crawl_data/crawled_data_{str(all_index)}_{str(index)}.warc.gz...")
             df = process_warc(f"./crawl_data/crawled_data_{str(all_index)}_{str(index)}.warc.gz", TARGET_WEBSITES, limit = 100000)
             df = get_maintext_and_title(df)
-            pd.DataFrame(df).to_csv(f"./crawl_csv/crawl_{str(all_index)}_{str(index)}.csv")
+            #pd.DataFrame(df).to_csv(f"./crawl_csv/crawl_{str(all_index)}_{str(index)}.csv")
             dataframe_to_json(df,all_index, index)  #transform crawled data to json layout
 
 if __name__ == '__main__':
