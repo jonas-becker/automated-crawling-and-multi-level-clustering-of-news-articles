@@ -263,8 +263,12 @@ def get_warc_paths(archiveFiles):
     '''
     warc_paths = []
 
-    for element in archiveFiles[:MAX_ARCHIVE_FILES_PER_URL]:
-        warc_paths.append(element["filename"])
+    if (len(archiveFiles) > MAX_ARCHIVE_FILES_PER_URL):
+        for element in archiveFiles[:MAX_ARCHIVE_FILES_PER_URL]:
+            warc_paths.append(element["filename"])
+    else:
+        for element in archiveFiles:
+            warc_paths.append(element["filename"])
 
     print("\nAdded " + str(len(warc_paths)) + " archives to download.")
     return warc_paths
