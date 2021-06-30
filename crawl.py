@@ -19,7 +19,7 @@ from langdetect import detect
 
 TARGET_WEBSITES = [".cnn.com", ".washingtonpost.com", ".nytimes.com", ".abcnews.go.com", ".bbc.com", ".cbsnews.com", ".chicagotribune.com", ".foxnews.com", ".huffpost.com", ".latimes.com", ".nbcnews.com", ".npr.org/sections/news", ".politico.com", ".reuters.com", ".slate.com", ".theguardian.com", ".wsj.com", ".usatoday.com", ".breitbart.com", ".nypost.com", ".cbslocal.com", ".nydailynews.com", ".newsweek.com", ".boston.com", ".denverpost.com", ".seattletimes.com", ".miamiherald.com", ".observer.com", ".washingtontimes.com", ".newsday.com", ".theintercept.com"]  #these trings will be compared with the URL and if matched added to datasets. You may add a specific path you are looking for
 TEST_TARGETS = [".nytimes.com", ".washingtonpost.com", ".nytimes.com", ".abcnews.go.com", ".bbc.com", ".cbsnews.com", ".chicagotribune.com", ".foxnews.com", ".huffpost.com", ".latimes.com", ".nbcnews.com", ".npr.org/sections/news", ".politico.com", ".reuters.com", ".slate.com", ".theguardian.com", ".wsj.com", ".usatoday.com", ".breitbart.com", ".nypost.com", ".cbslocal.com", ".nydailynews.com", ".newsweek.com", ".boston.com", ".denverpost.com", ".seattletimes.com", ".miamiherald.com", ".observer.com", ".washingtontimes.com", ".newsday.com", ".theintercept.com"]
-INDEXES = ['2020-16', "2021-21"]    #The indexes from commoncrawl
+INDEXES = ["2020-05", "2020-10", "2020-16", "2020-24", "2020-29", "2020-34"]    #The indexes from commoncrawl
 MAX_ARCHIVE_FILES_PER_URL = 4   #Change to increase or decrease the amount of crawled data per URL (Estimated size per archive: 1.2 GB)
 MINIMUM_MAINTEXT_LENGTH = 200
 DESIRED_LANGUAGE = "en"    #Set to None if all languages are desired.
@@ -35,11 +35,14 @@ def check_url_for_data(url, i):
     try:
         with urllib.request.urlopen(f'https://index.commoncrawl.org/CC-MAIN-{i}-index?url={url}&output=json') as url:
             resp = []
-            for element in url:
-                resp.append(json.loads(element))
-            return resp
+            if url is not None:
+                for element in url:
+                    resp.append(json.loads(element))
+                return resp
+            else:
+                return None
     except Exception as e:
-        print("Could not gather data from the index: ", i)
+        print("Could not gather data from the index: " + i + ", URL: " + url)
         print(e)
 
 def check_urls_for_data():
@@ -50,11 +53,16 @@ def check_urls_for_data():
     all_archive_files = []
     
     for i in INDEXES:
+        print("----Checking Index: " + i)
         for url in TEST_TARGETS:
-            print("ONE")
+            print("Checking URL for Data: " + url)
             archiveFiles = check_url_for_data(url, i)  #get the paths to all archives we may want to download
-            archiveFiles = [file for file in archiveFiles if not ("crawldiagnostics" in file["filename"] or "robotstxt" in file["filename"])]    #exclude diagnostic and robotstxt files because they do not include useful data
-            all_archive_files.append(archiveFiles)
+
+            if (archiveFiles is None):
+                continue
+            else:
+                archiveFiles = [file for file in archiveFiles if not ("crawldiagnostics" in file["filename"] or "robotstxt" in file["filename"])]    #exclude diagnostic and robotstxt files because they do not include useful data
+                all_archive_files.append(archiveFiles)
 
     return all_archive_files
           
