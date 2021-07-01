@@ -20,7 +20,7 @@ from langdetect import detect
 TARGET_WEBSITES = [".cnn.com", ".washingtonpost.com", ".nytimes.com", ".abcnews.go.com", ".bbc.com", ".cbsnews.com", ".chicagotribune.com", ".foxnews.com", ".huffpost.com", ".latimes.com", ".nbcnews.com", ".npr.org/sections/news", ".politico.com", ".reuters.com", ".slate.com", ".theguardian.com", ".wsj.com", ".usatoday.com", ".breitbart.com", ".nypost.com", ".cbslocal.com", ".nydailynews.com", ".newsweek.com", ".boston.com", ".denverpost.com", ".seattletimes.com", ".miamiherald.com", ".observer.com", ".washingtontimes.com", ".newsday.com", ".theintercept.com"]  #these trings will be compared with the URL and if matched added to datasets. You may add a specific path you are looking for
 TEST_TARGETS = [".cnn.com", ".washingtonpost.com", ".nytimes.com", ".abcnews.go.com", ".bbc.com", ".cbsnews.com", ".chicagotribune.com", ".foxnews.com", ".huffpost.com", ".latimes.com", ".nbcnews.com", ".npr.org/sections/news", ".politico.com", ".reuters.com", ".slate.com", ".theguardian.com", ".wsj.com", ".usatoday.com", ".breitbart.com", ".nypost.com", ".cbslocal.com", ".nydailynews.com", ".newsweek.com", ".boston.com", ".denverpost.com", ".seattletimes.com", ".miamiherald.com", ".observer.com", ".washingtontimes.com", ".newsday.com", ".theintercept.com"]
 INDEXES = ["2020-05", "2020-10", "2020-16", "2020-24", "2020-29", "2020-34"]    #The indexes from commoncrawl
-MAX_ARCHIVE_FILES_PER_URL = 4   #Change to increase or decrease the amount of crawled data per URL (Estimated size per archive: 1.2 GB)
+MAX_ARCHIVE_FILES_PER_URL = 6   #Change to increase or decrease the amount of crawled data per URL (Estimated size per archive: 1.2 GB)
 MINIMUM_MAINTEXT_LENGTH = 200
 DESIRED_LANGUAGE = "en"    #Set to None if all languages are desired.
 
