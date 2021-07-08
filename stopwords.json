@@ -1,15 +1,17 @@
 [
     "year", "thing", "time", "people", "someone", "week", 
     "anyone", "today", "month", "others", "person", "today",
-    "please", "ast", "day", "dec", "thu", "fri", "wed", "com",
+    "please", "ast", "day", "com",
     "country", "place", "part", "way", "point", "something", "lot",
     "hour", "thank", "everyone", "anything", "head", "mr", "ms",
     "line", "idea", "problem", "number", "medium", "story", "end",
     "question", "guy", "story", "kind", "point", "life", "front", 
     "issue", "fact", "home", "job", "nothing", "one", "world",
     "company", "state", "family", "everything", "area", "effort",
-    "situation", "wednesday", "ul", "well", "word", "example",
-    "night", "plan", 
-    "friday", "monday", "tuesday", "thursday", "saturday", "sunday",
-    "january", "february", "march", "may", "june", "august", "july", "september", "october", "november", "december"
+    "situation", "ul", "well", "word", "example", "fl", "mam",
+    "night", "plan", "http", "event", "bedroom", "bath", "url",
+    "friday", "monday", "tuesday", "thursday", "saturday", "sunday", "wednesday",
+    "fri", "mon", "tue", "thu", "sat", "sun", "wed",
+    "january", "february", "march", "april", "may", "june", "august", "july", "september", "october", "november", "december",
+    "jan", "feb", "mar", "apr", "jun", "aug", "jul", "sep", "oct", "nov", "dec"
 ]
