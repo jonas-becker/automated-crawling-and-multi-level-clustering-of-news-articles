@@ -299,7 +299,7 @@ def main():
             df = get_maintext_and_title(df)
             #pd.DataFrame(df).to_csv(f"./crawl_csv/crawl_{str(all_index)}_{str(index)}.csv")
             dataframe_to_json(df,all_index, index)  #transform crawled data to json layout
-            delete_all_warc_files() #delete warc files that are not needed anymore to save storage
+        delete_all_warc_files() #delete warc files that are not needed anymore to save storage
 
 if __name__ == '__main__':
     main()
