@@ -21,7 +21,7 @@ from langdetect import detect
 TARGET_WEBSITES = [".cnn.com", ".washingtonpost.com", ".nytimes.com", ".abcnews.go.com", ".bbc.com", ".cbsnews.com", ".chicagotribune.com", ".foxnews.com", ".huffpost.com", ".latimes.com", ".nbcnews.com", ".npr.org/sections/news", ".politico.com", ".reuters.com", ".slate.com", ".theguardian.com", ".wsj.com", ".usatoday.com", ".breitbart.com", ".nypost.com", ".cbslocal.com", ".nydailynews.com", ".newsweek.com", ".boston.com", ".denverpost.com", ".seattletimes.com", ".miamiherald.com", ".observer.com", ".washingtontimes.com", ".newsday.com", ".theintercept.com"]  #these trings will be compared with the URL and if matched added to datasets. You may add a specific path you are looking for
 TEST_TARGETS = [".cnn.com", ".washingtonpost.com", ".nytimes.com", ".abcnews.go.com", ".bbc.com", ".cbsnews.com", ".chicagotribune.com", ".foxnews.com", ".huffpost.com", ".latimes.com", ".nbcnews.com", ".npr.org/sections/news", ".politico.com", ".reuters.com", ".slate.com", ".theguardian.com", ".wsj.com", ".usatoday.com", ".breitbart.com", ".nypost.com", ".cbslocal.com", ".nydailynews.com", ".newsweek.com", ".boston.com", ".denverpost.com", ".seattletimes.com", ".miamiherald.com", ".observer.com", ".washingtontimes.com", ".newsday.com", ".theintercept.com"]
 INDEXES = ["2020-40", "2020-45", "2020-50", "2021-04", "2021-10", "2021-17", "2021-21", "2021-25"]    #The indexes from commoncrawl
-MAX_ARCHIVE_FILES_PER_URL = 1   #Change to increase or decrease the amount of crawled data per URL (Estimated size per archive: 1.2 GB)
+MAX_ARCHIVE_FILES_PER_URL = 6   #Change to increase or decrease the amount of crawled data per URL (Estimated size per archive: 1.2 GB)
 MINIMUM_MAINTEXT_LENGTH = 200
 START_NUMERATION_AT = 67
 DESIRED_LANGUAGE = "en"    #Set to None if all languages are desired.
@@ -202,7 +202,6 @@ def download_archives(warc_paths, all_index):
     for index, _ in enumerate(warc_paths):
         print("Downloading from CommonCrawl: " + warc_paths[index])
         resource = boto3.resource('s3')
-        bucket = resource.Bucket("commoncrawl")
         resource.meta.client.meta.events.register('choose-signer.s3.*', disable_signing)
         meta_data = resource.meta.client.head_object(Bucket="commoncrawl", Key=warc_paths[index])
         total_length = int(meta_data.get('ContentLength', 0))
@@ -212,11 +211,12 @@ def download_archives(warc_paths, all_index):
             nonlocal downloaded
             downloaded += chunk
             done = int(50 * downloaded / total_length)
-            sys.stdout.write("\r[%s%s] %s MB / %s MB\n" % ('=' * done, ' ' * (50-done), str(round(downloaded/100000)), str(round(total_length/100000))))
+            sys.stdout.write("\r[%s%s] %s MB / %s MB" % ('=' * done, ' ' * (50-done), str(round(downloaded/100000)), str(round(total_length/100000))))
             sys.stdout.flush()
 
         if os.path.isfile(f"crawl_data/crawled_data_{str(all_index+START_NUMERATION_AT)}_{str(index)}.warc.gz") is False: 
             resource.meta.client.download_file('commoncrawl', warc_paths[index], f"./crawl_data/crawled_data_{str(all_index+START_NUMERATION_AT)}_{str(index)}.warc.gz", Callback=progress)
+            print("\n")
 
 def get_detected_lang(text):
     '''
