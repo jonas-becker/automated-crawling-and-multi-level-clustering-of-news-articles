@@ -9,6 +9,7 @@ import ujson
 import os.path
 import warc
 import boto3
+import glob
 import sys
 from bs4 import BeautifulSoup
 from datetime import datetime
@@ -19,9 +20,10 @@ from langdetect import detect
 
 TARGET_WEBSITES = [".cnn.com", ".washingtonpost.com", ".nytimes.com", ".abcnews.go.com", ".bbc.com", ".cbsnews.com", ".chicagotribune.com", ".foxnews.com", ".huffpost.com", ".latimes.com", ".nbcnews.com", ".npr.org/sections/news", ".politico.com", ".reuters.com", ".slate.com", ".theguardian.com", ".wsj.com", ".usatoday.com", ".breitbart.com", ".nypost.com", ".cbslocal.com", ".nydailynews.com", ".newsweek.com", ".boston.com", ".denverpost.com", ".seattletimes.com", ".miamiherald.com", ".observer.com", ".washingtontimes.com", ".newsday.com", ".theintercept.com"]  #these trings will be compared with the URL and if matched added to datasets. You may add a specific path you are looking for
 TEST_TARGETS = [".cnn.com", ".washingtonpost.com", ".nytimes.com", ".abcnews.go.com", ".bbc.com", ".cbsnews.com", ".chicagotribune.com", ".foxnews.com", ".huffpost.com", ".latimes.com", ".nbcnews.com", ".npr.org/sections/news", ".politico.com", ".reuters.com", ".slate.com", ".theguardian.com", ".wsj.com", ".usatoday.com", ".breitbart.com", ".nypost.com", ".cbslocal.com", ".nydailynews.com", ".newsweek.com", ".boston.com", ".denverpost.com", ".seattletimes.com", ".miamiherald.com", ".observer.com", ".washingtontimes.com", ".newsday.com", ".theintercept.com"]
-INDEXES = ["2020-05", "2020-10", "2020-16", "2020-24", "2020-29", "2020-34"]    #The indexes from commoncrawl
-MAX_ARCHIVE_FILES_PER_URL = 6   #Change to increase or decrease the amount of crawled data per URL (Estimated size per archive: 1.2 GB)
+INDEXES = ["2020-40", "2020-45", "2020-50", "2021-04", "2021-10", "2021-17", "2021-21", "2021-25"]    #The indexes from commoncrawl
+MAX_ARCHIVE_FILES_PER_URL = 1   #Change to increase or decrease the amount of crawled data per URL (Estimated size per archive: 1.2 GB)
 MINIMUM_MAINTEXT_LENGTH = 200
+START_NUMERATION_AT = 67
 DESIRED_LANGUAGE = "en"    #Set to None if all languages are desired.
 
 
@@ -173,10 +175,10 @@ def dataframe_to_json(df, all_index, index):
     results = pd.DataFrame(list_df, columns=["authors", "date_download", "date_modify", "date_publish", "description", "image_url", "language", "localpath", "source_domain", "maintext", "title", "title_page", "title_rss", "url"])  #create a dataframe from the list
     print('Amount of extracted articles: {}'.format(count))
 
-    with open(f"./crawl_json/crawl_{str(all_index)}_{str(index)}.json", 'w', encoding='utf-8') as f:
+    with open(f"./crawl_json/crawl_{str(all_index+START_NUMERATION_AT)}_{str(index)}.json", 'w', encoding='utf-8') as f:
         f.write(ujson.dumps(results.to_dict('index'), indent=4, ensure_ascii=False, escape_forward_slashes=False))
 
-    print(f"Crawled data of ./crawl_data/crawled_data_{str(all_index)+'_'+str(index)}.warc.gz has been written to ./crawl_json/crawl_{str(all_index)}_{str(index)}.json") 
+    print(f"Crawled data of ./crawl_data/crawled_data_{str(all_index+START_NUMERATION_AT)+'_'+str(index)}.warc.gz has been written to ./crawl_json/crawl_{str(all_index+START_NUMERATION_AT)}_{str(index)}.json") 
 
 def get_paragraphs(soup):
     '''
@@ -213,8 +215,8 @@ def download_archives(warc_paths, all_index):
             sys.stdout.write("\r[%s%s] %s MB / %s MB\n" % ('=' * done, ' ' * (50-done), str(round(downloaded/100000)), str(round(total_length/100000))))
             sys.stdout.flush()
 
-        if os.path.isfile(f"crawl_data/crawled_data_{str(all_index)}_{str(index)}.warc.gz") is False: 
-            resource.meta.client.download_file('commoncrawl', warc_paths[index], f"./crawl_data/crawled_data_{str(all_index)}_{str(index)}.warc.gz", Callback=progress)
+        if os.path.isfile(f"crawl_data/crawled_data_{str(all_index+START_NUMERATION_AT)}_{str(index)}.warc.gz") is False: 
+            resource.meta.client.download_file('commoncrawl', warc_paths[index], f"./crawl_data/crawled_data_{str(all_index+START_NUMERATION_AT)}_{str(index)}.warc.gz", Callback=progress)
 
 def get_detected_lang(text):
     '''
@@ -227,6 +229,12 @@ def get_detected_lang(text):
     except:
         lang = 'default'
     return lang
+
+def delete_all_warc_files():
+    files = glob.glob('./crawl_data/*')
+    for f in files:
+        os.remove(f)
+    print("All downloaded warc files have been deleted after processing to save storage.")
 
 def get_maintext_and_title(df):
     '''
@@ -286,11 +294,12 @@ def main():
         download_archives(warc_paths, all_index)
 
         for index, _ in enumerate(warc_paths):
-            print(f"Processing ./crawl_data/crawled_data_{str(all_index)}_{str(index)}.warc.gz...")
-            df = process_warc(f"./crawl_data/crawled_data_{str(all_index)}_{str(index)}.warc.gz", TARGET_WEBSITES, limit = 100000)
+            print(f"Processing ./crawl_data/crawled_data_{str(all_index+START_NUMERATION_AT)}_{str(index)}.warc.gz...")
+            df = process_warc(f"./crawl_data/crawled_data_{str(all_index+START_NUMERATION_AT)}_{str(index)}.warc.gz", TARGET_WEBSITES, limit = 100000)
             df = get_maintext_and_title(df)
             #pd.DataFrame(df).to_csv(f"./crawl_csv/crawl_{str(all_index)}_{str(index)}.csv")
             dataframe_to_json(df,all_index, index)  #transform crawled data to json layout
+            delete_all_warc_files() #delete warc files that are not needed anymore to save storage
 
 if __name__ == '__main__':
     main()
