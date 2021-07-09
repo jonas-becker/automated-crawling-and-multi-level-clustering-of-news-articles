@@ -215,7 +215,11 @@ def download_archives(warc_paths, all_index):
             sys.stdout.flush()
 
         if os.path.isfile(f"crawl_data/crawled_data_{str(all_index+START_NUMERATION_AT)}_{str(index)}.warc.gz") is False: 
-            resource.meta.client.download_file('commoncrawl', warc_paths[index], f"./crawl_data/crawled_data_{str(all_index+START_NUMERATION_AT)}_{str(index)}.warc.gz", Callback=progress)
+            try:
+                resource.meta.client.download_file('commoncrawl', warc_paths[index], f"./crawl_data/crawled_data_{str(all_index+START_NUMERATION_AT)}_{str(index)}.warc.gz", Callback=progress)
+            except Exception as e:
+                print(e)
+                pass
             print("\n")
 
 def get_detected_lang(text):
