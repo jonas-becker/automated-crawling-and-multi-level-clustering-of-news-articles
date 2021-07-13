@@ -20,10 +20,10 @@ from langdetect import detect
 
 TARGET_WEBSITES = [".cnn.com", ".washingtonpost.com", ".nytimes.com", ".abcnews.go.com", ".bbc.com", ".cbsnews.com", ".chicagotribune.com", ".foxnews.com", ".huffpost.com", ".latimes.com", ".nbcnews.com", ".npr.org/sections/news", ".politico.com", ".reuters.com", ".slate.com", ".theguardian.com", ".wsj.com", ".usatoday.com", ".breitbart.com", ".nypost.com", ".cbslocal.com", ".nydailynews.com", ".newsweek.com", ".boston.com", ".denverpost.com", ".seattletimes.com", ".miamiherald.com", ".observer.com", ".washingtontimes.com", ".newsday.com", ".theintercept.com"]  #these trings will be compared with the URL and if matched added to datasets. You may add a specific path you are looking for
 TEST_TARGETS = [".cnn.com", ".washingtonpost.com", ".nytimes.com", ".abcnews.go.com", ".bbc.com", ".cbsnews.com", ".chicagotribune.com", ".foxnews.com", ".huffpost.com", ".latimes.com", ".nbcnews.com", ".npr.org/sections/news", ".politico.com", ".reuters.com", ".slate.com", ".theguardian.com", ".wsj.com", ".usatoday.com", ".breitbart.com", ".nypost.com", ".cbslocal.com", ".nydailynews.com", ".newsweek.com", ".boston.com", ".denverpost.com", ".seattletimes.com", ".miamiherald.com", ".observer.com", ".washingtontimes.com", ".newsday.com", ".theintercept.com"]
-INDEXES = ["2020-40", "2020-45", "2020-50", "2021-04", "2021-10", "2021-17", "2021-21", "2021-25"]    #The indexes from commoncrawl
-MAX_ARCHIVE_FILES_PER_URL = 6   #Change to increase or decrease the amount of crawled data per URL (Estimated size per archive: 1.2 GB)
+INDEXES = ["2021-25", "2021-21", "2021-17", "2021-10", "2021-04", "2020-50", "2020-45", "2020-40", "2020-34", "2020-29", "2020-24", "2020-16", "2020-10", "2020-05", "2019-51", "2019-47", "2019-43", "2019-39", "2019-35", "2019-30", "2019-26", "2019-22", "2019-18", "2019-13", "2019-09", "2019-04"]    #The indexes from commoncrawl
+MAX_ARCHIVE_FILES_PER_URL = 10   #Change to increase or decrease the amount of crawled data per URL (Estimated size per archive: 1.2 GB)
 MINIMUM_MAINTEXT_LENGTH = 200
-START_NUMERATION_AT = 67
+START_NUMERATION_AT = 0
 DESIRED_LANGUAGE = "en"    #Set to None if all languages are desired.
 
 
