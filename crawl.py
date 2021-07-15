@@ -1,5 +1,7 @@
-"""@package docstring
-"""
+## @package pyexample
+#  Documentation for this module.
+#
+#  More details.
 import pandas as pd
 import re
 import urllib
@@ -18,15 +20,21 @@ from time import time
 from botocore.handlers import disable_signing
 from langdetect import detect
 
+#The websites we want to keep crawled data from
 TARGET_WEBSITES = [".cnn.com", ".washingtonpost.com", ".nytimes.com", ".abcnews.go.com", ".bbc.com", ".cbsnews.com", ".chicagotribune.com", ".foxnews.com", ".huffpost.com", ".latimes.com", ".nbcnews.com", ".npr.org/sections/news", ".politico.com", ".reuters.com", ".slate.com", ".theguardian.com", ".wsj.com", ".usatoday.com", ".breitbart.com", ".nypost.com", ".cbslocal.com", ".nydailynews.com", ".newsweek.com", ".boston.com", ".denverpost.com", ".seattletimes.com", ".miamiherald.com", ".observer.com", ".washingtontimes.com", ".newsday.com", ".theintercept.com"]  #these trings will be compared with the URL and if matched added to datasets. You may add a specific path you are looking for
+#The urls we are asking commoncrawl to search WARC-Paths for
 TEST_TARGETS = [".cnn.com", ".washingtonpost.com", ".nytimes.com", ".abcnews.go.com", ".bbc.com", ".cbsnews.com", ".chicagotribune.com", ".foxnews.com", ".huffpost.com", ".latimes.com", ".nbcnews.com", ".npr.org/sections/news", ".politico.com", ".reuters.com", ".slate.com", ".theguardian.com", ".wsj.com", ".usatoday.com", ".breitbart.com", ".nypost.com", ".cbslocal.com", ".nydailynews.com", ".newsweek.com", ".boston.com", ".denverpost.com", ".seattletimes.com", ".miamiherald.com", ".observer.com", ".washingtontimes.com", ".newsday.com", ".theintercept.com"]
+#These indexes define the timeframes we want to crawl data from
 INDEXES = ["2021-25", "2021-21", "2021-17", "2021-10", "2021-04", "2020-50", "2020-45", "2020-40", "2020-34", "2020-29", "2020-24", "2020-16", "2020-10", "2020-05", "2019-51", "2019-47", "2019-43", "2019-39", "2019-35", "2019-30", "2019-26", "2019-22", "2019-18", "2019-13", "2019-09", "2019-04"]    #The indexes from commoncrawl
 MAX_ARCHIVE_FILES_PER_URL = 10   #Change to increase or decrease the amount of crawled data per URL (Estimated size per archive: 1.2 GB)
-MINIMUM_MAINTEXT_LENGTH = 200
-START_NUMERATION_AT = 0
+MINIMUM_MAINTEXT_LENGTH = 200   #How long an article should be in order to be processed. Shorter articles will be disgarded.
+MAX_CONNECTION_RETRIES = 3  #The amount of retries to download a WARC-File if the connection fails.
+START_NUMERATION_AT = 0     #Start the numeration of WARC-Files and json-files with a specific number (can be used to extend existing datasets)
 DESIRED_LANGUAGE = "en"    #Set to None if all languages are desired.
 
-
+## Documentation for a function.
+#
+#  More details
 def check_url_for_data(url, i):
     '''
     Check if JSON-Object is available under the URL for a specific CommonCrawl index.
@@ -200,27 +208,36 @@ def download_archives(warc_paths, all_index):
     '''
 
     for index, _ in enumerate(warc_paths):
-        print("Downloading from CommonCrawl: " + warc_paths[index])
-        resource = boto3.resource('s3')
-        resource.meta.client.meta.events.register('choose-signer.s3.*', disable_signing)
-        meta_data = resource.meta.client.head_object(Bucket="commoncrawl", Key=warc_paths[index])
-        total_length = int(meta_data.get('ContentLength', 0))
-        downloaded = 0
-
-        def progress(chunk):    #Progress Bar
-            nonlocal downloaded
-            downloaded += chunk
-            done = int(50 * downloaded / total_length)
-            sys.stdout.write("\r[%s%s] %s MB / %s MB" % ('=' * done, ' ' * (50-done), str(round(downloaded/100000)), str(round(total_length/100000))))
-            sys.stdout.flush()
-
-        if os.path.isfile(f"crawl_data/crawled_data_{str(all_index+START_NUMERATION_AT)}_{str(index)}.warc.gz") is False: 
+        retries = 0
+        while True:
             try:
-                resource.meta.client.download_file('commoncrawl', warc_paths[index], f"./crawl_data/crawled_data_{str(all_index+START_NUMERATION_AT)}_{str(index)}.warc.gz", Callback=progress)
+                print("Downloading from CommonCrawl: " + warc_paths[index])
+                resource = boto3.resource('s3')
+                resource.meta.client.meta.events.register('choose-signer.s3.*', disable_signing)
+                meta_data = resource.meta.client.head_object(Bucket="commoncrawl", Key=warc_paths[index])
+                total_length = int(meta_data.get('ContentLength', 0))
+                downloaded = 0
+
+                def progress(chunk):    #Progress Bar
+                    nonlocal downloaded
+                    downloaded += chunk
+                    done = int(50 * downloaded / total_length)
+                    sys.stdout.write("\r[%s%s] %s MB / %s MB" % ('=' * done, ' ' * (50-done), str(round(downloaded/100000)), str(round(total_length/100000))))
+                    sys.stdout.flush()
+
+                if (os.path.isfile(f"crawl_json/crawl_{str(all_index+START_NUMERATION_AT)}_{str(index)}.json") is False):   #only download when the json isnt already processed from an earlier crawl
+                    resource.meta.client.download_file('commoncrawl', warc_paths[index], f"./crawl_data/crawled_data_{str(all_index+START_NUMERATION_AT)}_{str(index)}.warc.gz", Callback=progress)
+                    print("\n")
+                break   #break out of while true loop when the download was successful
             except Exception as e:
+                retries = retries+1
+                print("\n")
+                print("An error happened while trying to connect to download the WARC-File.")
                 print(e)
-                pass
-            print("\n")
+                if retries >= MAX_CONNECTION_RETRIES:
+                    break
+                else:
+                    pass
 
 def get_detected_lang(text):
     '''
@@ -298,11 +315,14 @@ def main():
         download_archives(warc_paths, all_index)
 
         for index, _ in enumerate(warc_paths):
-            print(f"Processing ./crawl_data/crawled_data_{str(all_index+START_NUMERATION_AT)}_{str(index)}.warc.gz...")
-            df = process_warc(f"./crawl_data/crawled_data_{str(all_index+START_NUMERATION_AT)}_{str(index)}.warc.gz", TARGET_WEBSITES, limit = 100000)
-            df = get_maintext_and_title(df)
-            #pd.DataFrame(df).to_csv(f"./crawl_csv/crawl_{str(all_index)}_{str(index)}.csv")
-            dataframe_to_json(df,all_index, index)  #transform crawled data to json layout
+            if (os.path.isfile(f"crawl_json/crawl_{str(all_index+START_NUMERATION_AT)}_{str(index)}.json") is False):
+                print(f"Processing ./crawl_data/crawled_data_{str(all_index+START_NUMERATION_AT)}_{str(index)}.warc.gz...")
+                df = process_warc(f"./crawl_data/crawled_data_{str(all_index+START_NUMERATION_AT)}_{str(index)}.warc.gz", TARGET_WEBSITES, limit = 100000)
+                df = get_maintext_and_title(df)
+                #pd.DataFrame(df).to_csv(f"./crawl_csv/crawl_{str(all_index)}_{str(index)}.csv")
+                dataframe_to_json(df,all_index, index)  #transform crawled data to json layout
+            else:
+                print(f"Skipped processing of crawled_data_{str(all_index+START_NUMERATION_AT)}_{str(index)}.warc.gz because there already exists a corresponding json file.")
         delete_all_warc_files() #delete warc files that are not needed anymore to save storage
 
 if __name__ == '__main__':
