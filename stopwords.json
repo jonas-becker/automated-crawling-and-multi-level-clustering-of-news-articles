@@ -15,5 +15,6 @@
     "january", "february", "march", "april", "may", "june", "august", "july", "september", "october", "november", "december",
     "jan", "feb", "mar", "apr", "jun", "aug", "jul", "sep", "oct", "nov", "dec", 
     "cnn", "news", "fox", "bcc",
-    "บอล", "site", "https", "www", "online", "information", "article", "website", "php", "new", "case", "post", "email", "inbox", "blog", "video", "วน", "name", "adress"
+    "บอล", "site", "https", "www", "online", "information", "article", "website", "php", "new", "case", "post", "email", "inbox", 
+    "blog", "video", "วน", "บอล", "name", "adress", "js", "html", "css"
 ]
