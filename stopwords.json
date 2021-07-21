@@ -1,10 +1,10 @@
 [
     "year", "thing", "time", "people", "someone", "week", 
-    "anyone", "today", "month", "others", "person", "today",
+    "anyone", "today", "month", "others", "person",
     "please", "ast", "day", "com",
-    "country", "place", "part", "way", "point", "something", "lot",
+    "country", "place", "part", "way", "something", "lot",
     "hour", "thank", "everyone", "anything", "head", "mr", "ms",
-    "line", "idea", "problem", "number", "medium", "story", "end",
+    "line", "idea", "problem", "number", "medium", "end",
     "question", "guy", "story", "kind", "point", "life", "front", 
     "issue", "fact", "home", "job", "nothing", "one", "world",
     "company", "state", "family", "everything", "area", "effort",
@@ -15,7 +15,7 @@
     "january", "february", "march", "april", "may", "june", "august", "july", "september", "october", "november", "december",
     "jan", "feb", "mar", "apr", "jun", "aug", "jul", "sep", "oct", "nov", "dec", 
     "cnn", "news", "fox", "bcc",
-    "บอล", "site", "https", "www", "online", "information", "article", "website", "php", "new", "case", "post", "email", "inbox", 
-    "blog", "video", "วน", "บอล", "name", "adress", "js", "html", "css", "reason", "view", "detail", "wordpress", "member", "thanks", "content", 
-    "start", "side", "experience"
+    "site", "https", "www", "online", "information", "article", "website", "php", "new", "case", "post", "email", "inbox", 
+    "blog", "video", "วน", "บอล", "name", "adress", "js", "html", "css", "reason", "view", "detail", "wordpress", "member",
+    "thanks", "content", "start", "side", "experience"
 ]
