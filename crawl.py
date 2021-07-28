@@ -1,7 +1,7 @@
 ## @package pyexample
-#  Documentation for this module.
+#  Documentation for the crawler of the project.
 #
-#  More details.
+#  This crawler is downloading data from commoncrawl.
 import pandas as pd
 import re
 import urllib
@@ -20,21 +20,27 @@ from time import time
 from botocore.handlers import disable_signing
 from langdetect import detect
 
-#The websites we want to keep crawled data from
+#The websites we want to keep crawled data from.
+#This list of websites should ensure a diverese politcial spectrum within the crawled news articles. The list has been taken from the POLUSA Dataset. More information can be found here: https://arxiv.org/ftp/arxiv/papers/2005/2005.14024.pdf .
 TARGET_WEBSITES = [".cnn.com", ".washingtonpost.com", ".nytimes.com", ".abcnews.go.com", ".bbc.com", ".cbsnews.com", ".chicagotribune.com", ".foxnews.com", ".huffpost.com", ".latimes.com", ".nbcnews.com", ".npr.org/sections/news", ".politico.com", ".reuters.com", ".slate.com", ".theguardian.com", ".wsj.com", ".usatoday.com", ".breitbart.com", ".nypost.com", ".cbslocal.com", ".nydailynews.com", ".newsweek.com", ".boston.com", ".denverpost.com", ".seattletimes.com", ".miamiherald.com", ".observer.com", ".washingtontimes.com", ".newsday.com", ".theintercept.com"]  #these trings will be compared with the URL and if matched added to datasets. You may add a specific path you are looking for
-#The urls we are asking commoncrawl to search WARC-Paths for
+
+#The urls we are asking commoncrawl to search WARC-Paths for. This is different from TARGET_WEBSITES. Also add a website to TARGET_WEBSITES if you want to keep the data.
 TEST_TARGETS = [".cnn.com", ".washingtonpost.com", ".nytimes.com", ".abcnews.go.com", ".bbc.com", ".cbsnews.com", ".chicagotribune.com", ".foxnews.com", ".huffpost.com", ".latimes.com", ".nbcnews.com", ".npr.org/sections/news", ".politico.com", ".reuters.com", ".slate.com", ".theguardian.com", ".wsj.com", ".usatoday.com", ".breitbart.com", ".nypost.com", ".cbslocal.com", ".nydailynews.com", ".newsweek.com", ".boston.com", ".denverpost.com", ".seattletimes.com", ".miamiherald.com", ".observer.com", ".washingtontimes.com", ".newsday.com", ".theintercept.com"]
-#These indexes define the timeframes we want to crawl data from
+
+#These indexes define the timeframes we want to crawl data from. For further information please visit: https://index.commoncrawl.org/ .
 INDEXES = ["2021-25", "2021-21", "2021-17", "2021-10", "2021-04", "2020-50", "2020-45", "2020-40", "2020-34", "2020-29", "2020-24", "2020-16", "2020-10", "2020-05", "2019-51", "2019-47", "2019-43", "2019-39", "2019-35", "2019-30", "2019-26", "2019-22", "2019-18", "2019-13", "2019-09", "2019-04"]    #The indexes from commoncrawl
+
 MAX_ARCHIVE_FILES_PER_URL = 10   #Change to increase or decrease the amount of crawled data per URL (Estimated size per archive: 1.2 GB)
+
 MINIMUM_MAINTEXT_LENGTH = 200   #How long an article should be in order to be processed. Shorter articles will be disgarded.
+
 MAX_CONNECTION_RETRIES = 3  #The amount of retries to download a WARC-File if the connection fails.
+
 START_NUMERATION_AT = 0     #Start the numeration of WARC-Files and json-files with a specific number (can be used to extend existing datasets)
+
 DESIRED_LANGUAGE = "en"    #Set to None if all languages are desired.
 
-## Documentation for a function.
-#
-#  More details
+
 def check_url_for_data(url, i):
     '''
     Check if JSON-Object is available under the URL for a specific CommonCrawl index.
@@ -86,16 +92,14 @@ def process_warc(file_name, target_websites, limit=1000):    #unpack the gz and 
     '''
     warc_file = warc.open(file_name, 'rb')
     t0 = time()
-    n_documents = 0
+    n_articles = 0
     url_list = []
     header_list = []
     html_content = []
     date_list = []
 
     for record in warc_file:
-        #print(record['WARC-Date'])
-
-        if n_documents >= limit:
+        if n_articles >= limit:
             break
         url = record.url
         payload = record.payload.read()
@@ -120,9 +124,9 @@ def process_warc(file_name, target_websites, limit=1000):    #unpack the gz and 
             except Exception as e:
                 print(e)
                 continue
-        n_documents += 1
+        n_articles += 1
     warc_file.close()
-    print('Parsing took %s seconds and went through %s documents' %(time() - t0, n_documents))
+    print('Processing took %s seconds and went through %s articles' %(time() - t0, n_articles))
     return df
 
 def format_string(text):    #mix the soup until it has a nice taste
@@ -136,7 +140,7 @@ def format_string(text):    #mix the soup until it has a nice taste
     text = re.sub(u'(\u2018|\u2019)', "'", text)
     text = re.sub(u'(\u00fa|\u00ed|\u00e9|\u00f1|\u201c|\u00e1|\u00f3|\u4e0b|\u8f7d|\u9644|\u4ef6|\u00a9|\u00bd|\u00bc|\u2014|\u0005|\u0007|\u0006|\u4fdd|\u5b58|\u5230|\u76f8|\u518c|\u201d|\u00e8|\u00e0)', "", text)
     text = re.sub(u'\/', '/', text)
-    text = re.sub(u'\s+',' ', text)  #replace more than 2 whitespaces with a single whitespaces
+    text = re.sub(u'\s+',' ', text)  #replace more than 2 whitespaces with a single whitespace
     return text
 
 def get_domain(text):
@@ -204,7 +208,7 @@ def download_archives(warc_paths, all_index):
     Downloads the archives from the given URLs.
     @param warc_paths: The file path of the WARC-Files we want to download
     @param all_index: The index of the TEST_TARGETS
-    @return: returns nothing^
+    @return: returns nothing
     '''
 
     for index, _ in enumerate(warc_paths):
@@ -252,6 +256,10 @@ def get_detected_lang(text):
     return lang
 
 def delete_all_warc_files():
+    '''
+    Deletes all WARC-Files in the directory "./crawl_data/".
+    @return: returns nothing
+    '''
     files = glob.glob('./crawl_data/*')
     for f in files:
         os.remove(f)
@@ -268,15 +276,23 @@ def get_maintext_and_title(df):
     langs = []
 
     for i, element in enumerate(df["maintext"]): 
-        soup = BeautifulSoup(element, 'html.parser')
-        if (len(element) != 0 and soup.title != None):
-            paragraphs.append(get_paragraphs(soup))
-            langs.append(get_detected_lang(paragraphs[i]))
-            titles.append(soup.title.text)
-        else:
+        try:
+            soup = BeautifulSoup(element, 'html.parser')
+            if (len(element) != 0 and soup.title != None):
+                paragraphs.append(get_paragraphs(soup))
+                langs.append(get_detected_lang(paragraphs[i]))
+                titles.append(soup.title.text)
+            else:
+                paragraphs.append("Undefined")
+                langs.append("Undefined")
+                titles.append("Undefined")
+        except Exception as e:
+            print("An error happened while gathering the maintext and title.")
+            print(e)
             paragraphs.append("Undefined")
             langs.append("Undefined")
             titles.append("Undefined")
+            pass
         
 
     df["maintext"] = paragraphs
