@@ -28,7 +28,12 @@ TARGET_WEBSITES = [".cnn.com", ".washingtonpost.com", ".nytimes.com", ".abcnews.
 TEST_TARGETS = [".cnn.com", ".washingtonpost.com", ".nytimes.com", ".abcnews.go.com", ".bbc.com", ".cbsnews.com", ".chicagotribune.com", ".foxnews.com", ".huffpost.com", ".latimes.com", ".nbcnews.com", ".npr.org/sections/news", ".politico.com", ".reuters.com", ".slate.com", ".theguardian.com", ".wsj.com", ".usatoday.com", ".breitbart.com", ".nypost.com", ".cbslocal.com", ".nydailynews.com", ".newsweek.com", ".boston.com", ".denverpost.com", ".seattletimes.com", ".miamiherald.com", ".observer.com", ".washingtontimes.com", ".newsday.com", ".theintercept.com"]
 
 #These indexes define the timeframes we want to crawl data from. For further information please visit: https://index.commoncrawl.org/ .
-INDEXES = ["2021-25", "2021-21", "2021-17", "2021-10", "2021-04", "2020-50", "2020-45", "2020-40", "2020-34", "2020-29", "2020-24", "2020-16", "2020-10", "2020-05", "2019-51", "2019-47", "2019-43", "2019-39", "2019-35", "2019-30", "2019-26", "2019-22", "2019-18", "2019-13", "2019-09", "2019-04"]    #The indexes from commoncrawl
+INDEXES =   ["2021-25", "2021-21", "2021-17", "2021-10", "2021-04", 
+            "2020-50", "2020-45", "2020-40", "2020-34", "2020-29", "2020-24", "2020-16", "2020-10", "2020-05", 
+            "2019-51", "2019-47", "2019-43", "2019-39", "2019-35", "2019-30", "2019-26", "2019-22", "2019-18", "2019-13", "2019-09", "2019-04",
+            "2018-51", "2018-47", "2018-43", "2018-39", "2018-34", "2018-30", "2018-26", "2018-22", "2018-17", "2018-13", "2018-09", "2018-05",
+            "2017-51", "2017-47", "2017-43", "2017-39", "2017-34", "2017-30", "2017-26", "2017-22", "2017-17", "2017-13", "2017-09", "2017-04",
+            "2016-50", "2016-44", "2016-40", "2016-36", "2016-30", "2016-26", "2016-22", "2016-18", "2016-07"]
 
 MAX_ARCHIVE_FILES_PER_URL = 10   #Change to increase or decrease the amount of crawled data per URL (Estimated size per archive: 1.2 GB)
 
@@ -67,18 +72,27 @@ def check_urls_for_data():
     @return: all archive files that are fitting with the TEST_TARGETS
     '''
     all_archive_files = []
-    
-    for i in INDEXES:
-        print("----Checking Index: " + i)
-        for url in TEST_TARGETS:
-            print("Checking URL for Data: " + url)
-            archiveFiles = check_url_for_data(url, i)  #get the paths to all archives we may want to download
 
-            if (archiveFiles is None):
-                continue
-            else:
-                archiveFiles = [file for file in archiveFiles if not ("crawldiagnostics" in file["filename"] or "robotstxt" in file["filename"])]    #exclude diagnostic and robotstxt files because they do not include useful data
-                all_archive_files.append(archiveFiles)
+    if (os.path.isfile(f"commoncrawl_archives.json") is False):   #Do not check again if there already is a file of previously checked warc paths.
+        for i in INDEXES:
+            print("----Checking index for archives: " + i)
+            for url in TEST_TARGETS:
+                print("Checking URL for Data: " + url)
+                archiveFiles = check_url_for_data(url, i)  #get the paths to all archives we may want to download
+
+                if (archiveFiles is None):
+                    continue
+                else:
+                    archiveFiles = [file for file in archiveFiles if not ("crawldiagnostics" in file["filename"] or "robotstxt" in file["filename"])]    #exclude diagnostic and robotstxt files because they do not include useful data
+                    all_archive_files.append(archiveFiles)
+
+        #Write all paths into a json file so this step does not need to be done again (in case of the internet connection failing or other issues)
+        with open('commoncrawl_archives.json', 'w') as f:
+            json.dump(all_archive_files, f)
+    else:
+        print("Detected a warc_paths.json. Skipped checking of urls. The program will proceed with the list of warc paths in warc_paths.json. \nPlease remove the json file if you want to specify a new list of downloadable warc files.")
+        with open("commoncrawl_archives.json") as jsonFile:    #read the list from the json
+            all_archive_files = json.load(jsonFile)
 
     return all_archive_files
           
@@ -232,6 +246,8 @@ def download_archives(warc_paths, all_index):
                 if (os.path.isfile(f"crawl_json/crawl_{str(all_index+START_NUMERATION_AT)}_{str(index)}.json") is False):   #only download when the json isnt already processed from an earlier crawl
                     resource.meta.client.download_file('commoncrawl', warc_paths[index], f"./crawl_data/crawled_data_{str(all_index+START_NUMERATION_AT)}_{str(index)}.warc.gz", Callback=progress)
                     print("\n")
+                else:
+                    print(f"Skipped the download because there already exists a corresponding json file (crawl_json/crawl_{str(all_index+START_NUMERATION_AT)}_{str(index)}.json).")
                 break   #break out of while true loop when the download was successful
             except Exception as e:
                 retries = retries+1
@@ -316,6 +332,7 @@ def get_warc_paths(archiveFiles):
             warc_paths.append(element["filename"])
 
     print("\nAdded " + str(len(warc_paths)) + " archives to download.")
+
     return warc_paths
 
 
