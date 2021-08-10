@@ -35,7 +35,7 @@ INDEXES =   ["2021-25", "2021-21", "2021-17", "2021-10", "2021-04",
             "2017-51", "2017-47", "2017-43", "2017-39", "2017-34", "2017-30", "2017-26", "2017-22", "2017-17", "2017-13", "2017-09", "2017-04",
             "2016-50", "2016-44", "2016-40", "2016-36", "2016-30", "2016-26", "2016-22", "2016-18", "2016-07"]
 
-MAX_ARCHIVE_FILES_PER_URL = 10   #Change to increase or decrease the amount of crawled data per URL (Estimated size per archive: 1.2 GB)
+MAX_ARCHIVE_FILES_PER_URL = 5   #Change to increase or decrease the amount of crawled data per URL (Estimated size per archive: 1.2 GB)
 
 MINIMUM_MAINTEXT_LENGTH = 200   #How long an article should be in order to be processed. Shorter articles will be disgarded.
 
