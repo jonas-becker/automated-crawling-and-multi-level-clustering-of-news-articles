@@ -8,3 +8,4 @@ crawl_csv/*
 clustered_json/*
 lda_results/*
 *.7z
+*.json
