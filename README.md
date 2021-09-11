@@ -34,7 +34,7 @@ After Crawling you may cluster the dataset on one or multiple levels.
 1) Latent Dirichlet Allocation (LDA): First start by running the `LDA_clustering.ipynb` jupyter notebook. 
 2) K-Means: For the second and third layer you may run `KMeans_clustering.ipynb`.  
 
-# Output Directories
+### Output Directories
 - Crawler: `./crawl_json`
 - LDA Clustering: `./LDA_clustered_json`
 - Three-Level Clustering: `./clustered_json`
