@@ -1,6 +1,6 @@
 >📋  A template README.md for code accompanying a Machine Learning paper
 
-# Crawling And Clustering For A High Quantity Of News Articles
+# Crawling And Multi-Level Clustering For A High Quantity Of News Articles
 
 This project has been a part of the course "Key Competencies of Computer Science" at the University of Wuppertal to annotate a Crossdocument Coreference Resolution Model and was supervised by Anastasia Zhukova & Prof. Dr. Bela Gipp. 
 
@@ -17,13 +17,18 @@ The crawler works as a usual python script. The clustering is performed within a
 
 >📋  Describe how to set up the environment, e.g. pip/conda/docker commands, download datasets, etc...
 
-## Training
+## Crawling & Clustering
 
-To train the model(s) in the paper, run this command:
+To crawl a dataset for news articles from [CommonCrawl](https://commoncrawl.org/) type:
 
-```train
-python train.py --input-data <path_to_data> --alpha 10 --beta 20
+```crawl
+python crawl.py
 ```
+
+After Crawling you may cluster the dataset on one or multiple levels. 
+1) LDA: First start by running the `LDA_clustering.ipynb jupyter` notebook. 
+2) KMeans: For the second and third layer you may run `KMeans_clustering.ipynb`.  
+
 
 >📋  Describe how to train the models, with example commands on how to train the models in your paper, including the full training procedure and appropriate hyperparameters.
 
