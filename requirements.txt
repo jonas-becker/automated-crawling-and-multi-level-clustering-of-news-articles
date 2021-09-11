@@ -1,0 +1,35 @@
+#Crawler Packages
+pandas
+re
+urllib
+urllib
+json
+ujson
+os
+boto3
+sys
+glob
+bs4
+datetime
+time
+botocore
+langdetect
+git+git://github.com/erroneousboat/warc3
+
+#Clustering Packages
+pandas
+numpy
+os
+glob
+re
+nltk
+tqdm
+wordcloud
+gensim
+json
+pprint
+matplotlib
+kneed
+pyLDAvis
+pickle
+ujson
