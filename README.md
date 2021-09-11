@@ -1,6 +1,6 @@
 # Crawling And Multi-Level Clustering For A High Quantity Of News Articles
 
-This project has been a part of the course "Key Competencies of Computer Science" at the University of Wuppertal to annotate a Crossdocument Coreference Resolution Model and was supervised by Anastasia Zhukova & Prof. Dr. Bela Gipp. 
+This project has been a part of the course "Key Competencies of Computer Science" at the University of Wuppertal to annotate a Crossdocument Coreference Resolution Model and was supervised by Anastasia Zhukova. 
 
 >📋  Optional: include a graphic explaining your approach/main result, bibtex entry, link to demos, blog posts and tutorials
 
