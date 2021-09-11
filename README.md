@@ -13,7 +13,7 @@ To install requirements:
 ```setup
 pip install -r requirements.txt
 ```
-This project consists of two parts: The crawler and the clustering algorithm. The crawler works as a usual python script. The clustering is performed within a jupyter notebook to make adjusting hyperparameters easier. 
+This project consists of two parts: The crawler and the clustering algorithm. The crawler works as a usual python script. The clustering is performed within a jupyter notebook to allow easier adjusting of hyperparameters and visualisations. 
 
 You can download a sample dataset which has been crawled with this project by clicking [here](https://drive.google.com/drive/u/0/folders/1hXE7dH-QrgaeUjD9fOlfpDlApA8XBPTP). 
 You can download an already clustered dataset by clicking here.
