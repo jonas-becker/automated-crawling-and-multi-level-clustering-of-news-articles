@@ -2,7 +2,7 @@
 
 # Crawling And Clustering For A High Quantity of News Articles
 
-This repository is the official implementation of [Crawling And Clustering For A High Quantity of News Articles](IDENTIFIER EINFÜGEN). 
+This project has been a part of the course "Key Competencies of Computer Science" at the University of Wuppertal to annotate a Crossdocument Coreference Resolution Model and was supervised by Anastasia Zhukova & Prof. Dr. Bela Gipp. 
 
 >📋  Optional: include a graphic explaining your approach/main result, bibtex entry, link to demos, blog posts and tutorials
 
