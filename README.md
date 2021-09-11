@@ -1,5 +1,3 @@
->📋  A template README.md for code accompanying a Machine Learning paper
-
 # Crawling And Multi-Level Clustering For A High Quantity Of News Articles
 
 This project has been a part of the course "Key Competencies of Computer Science" at the University of Wuppertal to annotate a Crossdocument Coreference Resolution Model and was supervised by Anastasia Zhukova & Prof. Dr. Bela Gipp. 
@@ -19,8 +17,6 @@ This project consists of two parts: The crawler and the clustering algorithm. Th
 - You can download an already clustered dataset by clicking here.
 
 The dataset consists of ~250.000 American news articles from 03/2016 to 07/2021. The websites chosen are based on the [POLUSA](https://arxiv.org/abs/2005.14024) dataset to ensure a diverse political spectrum.
-
->📋  Describe how to set up the environment, e.g. pip/conda/docker commands, download datasets, etc...
 
 ## Crawling & Clustering
 
