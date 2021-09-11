@@ -39,7 +39,17 @@ After Crawling you may cluster the dataset on one or multiple levels.
 
 ## Evaluation
 
-To evaluate my model on ImageNet, run:
+To archieve the best results you may change some parameters in the code. The following parameters have a significant influence on the quality of the produced dataset.
+
+### Crawler
+
+```parameters
+TARGET_WEBSITES, TEST_TARGETS, INDEXES, MAX_ARCHIVE_FILES_PER_URL, MINIMUM_MAINTEXT_LENGTH, MAX_CONNECTION_RETRIES, START_NUMERATION_AT, DESIRED_LANGUAGE
+```
+
+Define Indexes (which represent the release dates of news articles) by choosing them from the [CommonCrawl Index List](https://index.commoncrawl.org/).
+
+### Clustering
 
 ```eval
 python eval.py --model-file mymodel.pth --benchmark imagenet
