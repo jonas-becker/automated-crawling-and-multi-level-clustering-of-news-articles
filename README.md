@@ -37,7 +37,7 @@ After Crawling you may cluster the dataset on one or multiple levels.
 
 >📋  Describe how to train the models, with example commands on how to train the models in your paper, including the full training procedure and appropriate hyperparameters.
 
-## Evaluation
+## Archieve The Best Possible Result
 
 To archieve the best results you may change some parameters in the code. The following parameters have a significant influence on the quality of the produced dataset.
 
