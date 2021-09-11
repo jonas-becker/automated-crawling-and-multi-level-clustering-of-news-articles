@@ -32,7 +32,7 @@ python crawl.py
 
 After Crawling you may cluster the dataset on one or multiple levels. 
 1) **Latent Dirichlet Allocation (LDA):** First start by running the `LDA_clustering.ipynb` jupyter notebook. 
-2) **K-Means:** For the second and third layer you may run `KMeans_clustering.ipynb`.  
+2) **K-Means & Timed Events:** For the second and third layer you may run `KMeans_clustering.ipynb`.  
 
 ### Output Directories
 - Crawler: `./crawl_json`
