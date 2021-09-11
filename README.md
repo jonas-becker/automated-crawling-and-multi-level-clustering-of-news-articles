@@ -16,7 +16,7 @@ pip install -r requirements.txt
 This project consists of two parts: The crawler and the clustering algorithm. The crawler works as a usual python script. The clustering is performed within a jupyter notebook to allow easier adjusting of hyperparameters and visualisations. 
 
 - You can download a sample dataset which has been crawled with this project by clicking [here](https://drive.google.com/drive/u/0/folders/1hXE7dH-QrgaeUjD9fOlfpDlApA8XBPTP).
--  You can download an already clustered dataset by clicking here.
+- You can download an already clustered dataset by clicking here.
 
 The dataset consists of ~250.000 American news articles from 03/2016 to 07/2021. The websites chosen are based on the [POLUSA](https://arxiv.org/abs/2005.14024) dataset to ensure a diverse political spectrum.
 
@@ -31,9 +31,13 @@ python crawl.py
 ```
 
 After Crawling you may cluster the dataset on one or multiple levels. 
-1) LDA: First start by running the `LDA_clustering.ipynb` jupyter notebook. 
-2) KMeans: For the second and third layer you may run `KMeans_clustering.ipynb`.  
+1) Latent Dirichlet Allocation (LDA): First start by running the `LDA_clustering.ipynb` jupyter notebook. 
+2) K-Means: For the second and third layer you may run `KMeans_clustering.ipynb`.  
 
+# Output Directories
+- Crawler: `./crawl_json`
+- LDA Clustering: `./LDA_clustered_json`
+- Three-Level Clustering: `./clustered_json`
 
 >📋  Describe how to train the models, with example commands on how to train the models in your paper, including the full training procedure and appropriate hyperparameters.
 
