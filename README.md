@@ -15,8 +15,8 @@ pip install -r requirements.txt
 ```
 This project consists of two parts: The crawler and the clustering algorithm. The crawler works as a usual python script. The clustering is performed within a jupyter notebook to allow easier adjusting of hyperparameters and visualisations. 
 
-You can download a sample dataset which has been crawled with this project by clicking [here](https://drive.google.com/drive/u/0/folders/1hXE7dH-QrgaeUjD9fOlfpDlApA8XBPTP). 
-You can download an already clustered dataset by clicking here.
+- You can download a sample dataset which has been crawled with this project by clicking [here](https://drive.google.com/drive/u/0/folders/1hXE7dH-QrgaeUjD9fOlfpDlApA8XBPTP).
+-  You can download an already clustered dataset by clicking here.
 
 The dataset consists of ~250.000 American news articles from 03/2016 to 07/2021. The websites chosen are based on the [POLUSA](https://arxiv.org/abs/2005.14024) dataset to ensure a diverse political spectrum.
 
