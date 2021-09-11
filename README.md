@@ -13,6 +13,7 @@ To install requirements:
 ```setup
 pip install -r requirements.txt
 ```
+The crawler works as a usual python script. The clustering is performed within a jupyter notebook to make adjusting hyperparameters easier. 
 
 >📋  Describe how to set up the environment, e.g. pip/conda/docker commands, download datasets, etc...
 
