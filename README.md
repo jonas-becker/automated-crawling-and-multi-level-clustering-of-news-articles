@@ -51,8 +51,14 @@ Define Indexes (which represent the release dates of news articles) by choosing 
 
 ### Clustering
 
-```eval
-python eval.py --model-file mymodel.pth --benchmark imagenet
+These parameters can be adjusted within the `LDA_clustering.ipynb` (first level).
+```parameters
+topic_amount_start, topic_amount_end, iteration_interval, desired_coherence
+```
+
+These parameters can be adjusted within the `KMeans_clustering.ipynb` (second & third level).
+```parameters
+max_clusters
 ```
 
 >📋  Describe how to evaluate the trained models on benchmarks reported in the paper, give commands that produce the results (section below).
