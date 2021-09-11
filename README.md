@@ -1,6 +1,6 @@
 >📋  A template README.md for code accompanying a Machine Learning paper
 
-# Crawling And Clustering Of A High Quantity of News Articles
+# Crawling And Clustering For A High Quantity Of News Articles
 
 This project has been a part of the course "Key Competencies of Computer Science" at the University of Wuppertal to annotate a Crossdocument Coreference Resolution Model and was supervised by Anastasia Zhukova & Prof. Dr. Bela Gipp. 
 
