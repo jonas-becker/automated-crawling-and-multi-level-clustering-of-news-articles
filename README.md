@@ -23,7 +23,7 @@ pip install -r requirements.txt
 This project consists of two parts: The crawler and the clustering algorithms. The crawler works as a usual python script. The clustering is performed within two jupyter notebooks to allow easier adjusting of hyperparameters and visualisations. 
 
 - You can download a sample dataset which has been crawled with this project by clicking [here](https://drive.google.com/drive/u/0/folders/1hXE7dH-QrgaeUjD9fOlfpDlApA8XBPTP).
-- You can download an already clustered dataset by clicking here.
+- You can download the already clustered dataset by clicking here.
 
 The dataset consists of ~250.000 American news articles from 03/2016 to 07/2021. The websites chosen are based on the [POLUSA](https://arxiv.org/abs/2005.14024) dataset to ensure a diverse political spectrum.
 
@@ -84,7 +84,7 @@ All json-outputs follow the [news-please format](https://github.com/fhamborg/new
 Describe how you decide which cluster amount fits etc
 
 
-## Archieve The Best Possible Result
+## Parameters
 
 To archieve the best results you may change some parameters in the code. The following parameters have a significant influence on the quality of the produced dataset.
 
@@ -114,6 +114,11 @@ These parameters can be adjusted within the `LDA_clustering.ipynb` (first level)
 |`topic_amount_end`| Maximum amount of clusters|
 |`iteration_interval`| Default Interval is 1|
 |`desired_coherence`| Algorithm stops when value is reached|
+
+The LDA Pipeline will filter out a predefined list of stopwords extended by a json file. You can add/remove keywords to filter out in this file:
+```stopwords
+stopwords.json
+```
 
 #### K-Means Clustering
 These parameters can be adjusted within the `KMeans_clustering.ipynb` (second & third level).
