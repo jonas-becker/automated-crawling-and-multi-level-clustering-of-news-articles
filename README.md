@@ -1,19 +1,24 @@
-# Crawling And Multi-Level Clustering For A High Quantity Of News Articles :newspaper:
-
-This project has been a part of the course "Key Competencies in Computer Science" at the University of Wuppertal to annotate a Crossdocument Coreference Resolution Model and was supervised by Anastasia Zhukova.
-
+# Crawling And Multi-Level Clustering Of News Articles :newspaper:
+Crawling a dataset of news articles from CommonCrawl and clustering them by their topics.
 ## Table of Contents
-  - [Requirements](#requirements)
-  - [Crawling & Clustering](#crawling--clustering)
-    - [Pipelines](#pipelines)
-    - [Output Directories](#output-directories)
+  - [Motivation](#motivation)
+  - [Installation](#installation)
+  - [Crawling](#crawling)
+  - [Clustering](#clustering)
+  - [Output Directories](#output-directories)
   - [Methodology](#methodology)
   - [Archieve The Best Possible Result](#archieve-the-best-possible-result)
     - [Crawler](#crawler)
     - [Clustering](#clustering)
   - [Contributing](#contributing)
 
-## Requirements
+## Motivation
+Every day thousands of news articles with different political orientations are released.
+The goal of this project is to create a dataset based on news articles,
+which are clustered by their topics.
+This project has been a part of the course [Key Competencies in Computer Science](https://dke.uni-wuppertal.de/en/teaching.html) at the University of Wuppertal to annotate a Crossdocument Coreference Resolution Model and was supervised by   [Anastasia Zhukova](https://github.com/anastasia-zhukova).
+
+## Installation
 
 To install requirements:
 
