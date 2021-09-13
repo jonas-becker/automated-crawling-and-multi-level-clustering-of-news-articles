@@ -35,8 +35,7 @@ To crawl a dataset of news articles from [CommonCrawl](https://commoncrawl.org/)
 python crawl.py
 ```
 
-### Pipelines
-#### Crawling
+### Pipeline
 This pipeline is executed 
 <img src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/crawl_pipeline.png" width="800">
 
@@ -51,12 +50,10 @@ LDA_clustering.ipynb
 ```notebook
 KMeans_clustering.ipynb
 ```
-### Pipelines
-
-#### LDA Clustering
+### Pipelines LDA Clustering
 <img src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/lda_pipeline.png" width="800">
 
-#### K-Means Clustering
+### Pipelines K-Means Clustering
 <img src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/kMeans_pipeline.png" width="800">
 
 ## Output Directories
