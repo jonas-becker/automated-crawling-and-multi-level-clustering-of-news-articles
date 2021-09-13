@@ -177,7 +177,7 @@ Our model achieves the following performance on :
 
 ## References
 
-Felix Hamborg. 2020. Newsplease Json Format. https://github.com/fhamborg/news-please/blob/master/newsplease/examples/sample.json
+- Felix Hamborg. 2020. Newsplease Json Format. https://github.com/fhamborg/news-please/blob/master/newsplease/examples/sample.json
 
-Lukas Gebhard and Felix Hamborg. 2020. The POLUSA Dataset: 0.9M Political News Articles Balanced by Time and Outlet Popularity. In Proceedings of the ACM/IEEE Joint Conference on Digital Libraries in 2020 (JCDL '20). Association for Computing Machinery, New York, NY, USA, 467–468. DOI:https://doi.org/10.1145/3383583.3398567 
+- Lukas Gebhard and Felix Hamborg. 2020. The POLUSA Dataset: 0.9M Political News Articles Balanced by Time and Outlet Popularity. In Proceedings of the ACM/IEEE Joint Conference on Digital Libraries in 2020 (JCDL '20). Association for Computing Machinery, New York, NY, USA, 467–468. DOI:https://doi.org/10.1145/3383583.3398567 
 
