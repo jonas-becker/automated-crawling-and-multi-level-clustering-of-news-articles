@@ -46,11 +46,11 @@ The Crawler is gathering WARC data from CommonCrawl and processing it into a jso
 After Crawling you may cluster the dataset on one or multiple levels. 
 1) **Latent Dirichlet Allocation (LDA):** First start by running the jupyter notebook:
 ```notebook
-LDA_clustering.ipynb
+LDA.ipynb
 ```  
 2) **K-Means & Timed Events:** For the second and third layer you may run the jupyter notebook:
 ```notebook
-KMeans_clustering.ipynb
+KMeans.ipynb
 ```
 ### Pipeline LDA Clustering
 The `LDA_clustering.ipynb` notebook is taking all json files within the directory `./crawl_json` and performs this pipeline on the concluded data. Each cluster will get assigned a json file representing a cluster.
