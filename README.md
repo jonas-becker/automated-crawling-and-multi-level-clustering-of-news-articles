@@ -35,6 +35,13 @@ After Crawling you may cluster the dataset on one or multiple levels.
 - LDA Clustering: `./LDA_clustered_json`
 - Three-Level Clustering: `./clustered_json`
 
+All json-outputs follow the [news-please format](https://github.com/fhamborg/news-please) while adding some new variables. The added variables are
+
+- `LDA_ID`: The ID of the articles corresponding level 1 cluster
+- `kMeans_ID`: The ID of the articles corresponding level 2 cluster
+- `LDA_topic_percentage`: An indicator about how well the article fits into its LDA cluster.
+- `LDA_topic_keywords`, `kMeans_topic_keywords`: The most dominant keywords within the articles cluster
+
 >📋  Describe how to train the models, with example commands on how to train the models in your paper, including the full training procedure and appropriate hyperparameters.
 
 ## Archieve The Best Possible Result
