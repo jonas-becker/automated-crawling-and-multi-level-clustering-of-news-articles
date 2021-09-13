@@ -93,7 +93,7 @@ Describe how you decide which cluster amount fits etc
 
 ## Parameters
 
-To archieve the best results you may change some parameters in the code. The following parameters have a significant influence on the quality of the produced dataset.
+To achieve the best results you may change some parameters in the code. The following parameters have a significant influence on the quality of the produced dataset.
 
 ### Crawler
 
@@ -137,6 +137,28 @@ These parameters can be adjusted within the `KMeans_clustering.ipynb` (second & 
 |`max_df`|
 
 ## Results
+
+### LDA Clustering
+The optimal amount of clusters is determined by calculating the coherence score for each iteration of the algorithm. The definitive choice of clusters depends on said coherence score.
+
+| Amount Of Clusters | Coherence Score |
+| ------------------ |---------------- |
+| ...   |  ...  |
+| 13   |  44.01 %  |
+| 14 *(best result)*  |  56.74 %  |
+| 15   |  50.94 %  |
+| ...   |  ...  |
+
+### K-Means Clustering
+The optimal amount of clusters is determined by performing K-Means on multiple amounts of clusters. The definitive choice of clusters is made by calculating the elbow/knee of the distortion curve. The amount of level 2 clusters is calculated independently for every level 1 cluster.
+
+| Amount Of Clusters | Distortion |
+| ------------------ |---------------- |
+| ...   |  ...  |
+| 6   |  44.01 %  |
+| 7 *(best result)*  |  56.74 %  |
+| 8   |  50.94 %  |
+| ...   |  ...  |
 
 >📋  Describe how to evaluate the trained models on benchmarks reported in the paper, give commands that produce the results (section below).
 
