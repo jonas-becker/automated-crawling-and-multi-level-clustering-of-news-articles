@@ -58,7 +58,7 @@ The `LDA_clustering.ipynb` notebook is taking all json files within the director
 <img src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/lda_pipeline.png" width="800">
 
 ### Pipeline K-Means Clustering
-The `kMeans_cl.ustering.ipynb` notebook is taking all json files within the directory `./lda_clustered_json` one by one. Each level 1 cluster will then get devided into subclusters which are represented by a folder hierarchy in the output.
+The `kMeans_clustering.ipynb` notebook is taking all json files within the directory `./lda_clustered_json` one by one. Each level 1 cluster will then get devided into subclusters which are represented by a folder hierarchy in the output.
 
 <img src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/kMeans_pipeline.png" width="800">
 
