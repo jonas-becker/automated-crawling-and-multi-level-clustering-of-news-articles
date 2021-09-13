@@ -46,6 +46,9 @@ After Crawling you may cluster the dataset on one or multiple levels.
 #### LDA Clustering
 <img src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/lda_pipeline.png" width="1000">
 
+#### K-Means Clustering
+<img src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/kMeans_pipeline.png" width="1000">
+
 ### Output Directories
 - Crawler: `./crawl_json`
 - LDA Clustering: `./LDA_clustered_json`
