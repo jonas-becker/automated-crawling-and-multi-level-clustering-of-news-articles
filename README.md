@@ -175,7 +175,9 @@ Our model achieves the following performance on :
 >📋  Include a table of results from your paper, and link back to the leaderboard for clarity and context. If your main result is a figure, include that figure and link to the command or notebook to reproduce it. 
 
 
-## Contributing
+## References
 
->📋  Pick a licence and describe how to contribute to your code repository. 
+Felix Hamborg. 2020. Newsplease Json Format. https://github.com/fhamborg/news-please/blob/master/newsplease/examples/sample.json
+
+Lukas Gebhard and Felix Hamborg. 2020. The POLUSA Dataset: 0.9M Political News Articles Balanced by Time and Outlet Popularity. In Proceedings of the ACM/IEEE Joint Conference on Digital Libraries in 2020 (JCDL '20). Association for Computing Machinery, New York, NY, USA, 467–468. DOI:https://doi.org/10.1145/3383583.3398567 
 
