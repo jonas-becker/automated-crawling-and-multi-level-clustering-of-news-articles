@@ -27,7 +27,7 @@ This project consists of two parts: The crawler and the clustering algorithms. T
 
 The dataset consists of ~250.000 American news articles from 03/2016 to 07/2021. The websites chosen are based on the [POLUSA](https://arxiv.org/abs/2005.14024) dataset to ensure a diverse political spectrum.
 
-## Crawling & Clustering
+## Crawling
 
 To crawl a dataset of news articles from [CommonCrawl](https://commoncrawl.org/), type:
 
@@ -35,13 +35,23 @@ To crawl a dataset of news articles from [CommonCrawl](https://commoncrawl.org/)
 python crawl.py
 ```
 
-After Crawling you may cluster the dataset on one or multiple levels. 
-1) **Latent Dirichlet Allocation (LDA):** First start by running the `LDA_clustering.ipynb` jupyter notebook. 
-2) **K-Means & Timed Events:** For the second and third layer you may run `KMeans_clustering.ipynb`.
-
 ### Pipelines
-#### Crawler
+#### Crawling
+This pipeline is executed 
 <img src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/crawl_pipeline.png" width="800">
+
+##Clustering
+
+After Crawling you may cluster the dataset on one or multiple levels. 
+1) **Latent Dirichlet Allocation (LDA):** First start by running the jupyter notebook:
+```notebook
+LDA_clustering.ipynb
+```  
+2) **K-Means & Timed Events:** For the second and third layer you may run the jupyter notebook:
+```notebook
+KMeans_clustering.ipynb
+```
+### Pipelines
 
 #### LDA Clustering
 <img src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/lda_pipeline.png" width="800">
@@ -49,7 +59,7 @@ After Crawling you may cluster the dataset on one or multiple levels.
 #### K-Means Clustering
 <img src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/kMeans_pipeline.png" width="800">
 
-### Output Directories
+## Output Directories
 - Crawler: `./crawl_json`
 - LDA Clustering: `./LDA_clustered_json`
   - Generate multiple json files with each one representing a cluster of different topics
