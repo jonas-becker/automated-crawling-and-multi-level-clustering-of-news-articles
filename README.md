@@ -43,10 +43,12 @@ python crawl.py
 ```
 
 ### Pipeline
-The Crawler is gathering WARC data from CommonCrawl and processing it into a json layout. This json data can later be used for clustering.
+The crawler is gathering WARC data from CommonCrawl and processing it into a json layout. This json data can later be used for clustering.
 
 
 <img src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/crawl_pipeline.png" width="800">
+
+Running the crawler for the first time will produce a `commoncrawl_archives.json` file. This allows the crawler to be stopped and continue crawling at a later time. If there exists a file with said name, the crawler will skip the initialization of WARC paths and continue downloading immediately (while skipping already processed data). That can be used to extend an existing dataset while only changing the amount of articles crawled per timeframe.
 
 ## Clustering
 
@@ -101,11 +103,11 @@ To achieve the best results you may change some parameters in the code. The foll
 | ------------------ |--------------------------------------|
 | `TARGET_WEBSITES`  | Websites you want to keep crawled data|
 | `TEST_TARGETS`| URLs to request WARC-files from CommonCrawl|
-|`INDEXES`| Indexes from CommonCrawl|
+|`INDEXES`| Indexes from CommonCrawl |
 |`MAX_ARCHIVE_FILES_PER_URL`| Maximum amount of archive files per item of `TEST_TARGETS`|
 |`MINIMUM_MAINTEXT_LENGTH`| Shorter articles will be discarded|
 |`MAX_CONNECTION_RETRIES`| Maximum retries while downloading|
-|`START_NUMERATION_AT`| Change if you want to extend dataset|
+|`START_NUMERATION_AT`| Change if you want to extend the dataset|
 |`DESIRED_LANGUAGE`| Select desired language, for example `en`|   
 
 Define Indexes (which represent the release dates of news articles) by choosing them from the [CommonCrawl Index List](https://index.commoncrawl.org/).
@@ -119,7 +121,7 @@ These parameters can be adjusted within the `LDA_clustering.ipynb` (first level)
 | ------------------ |--------------------------------------|
 |`topic_amount_start`| Minimum amount of clusters|
 |`topic_amount_end`| Maximum amount of clusters|
-|`iteration_interval`| Default Interval is 1|
+|`iteration_interval`| The default interval is 1|
 |`desired_coherence`| Algorithm stops when value is reached|
 
 The LDA Pipeline filters out a predefined list of stopwords extended by a json file. You can add/remove keywords by seperating them with commas in this file:
