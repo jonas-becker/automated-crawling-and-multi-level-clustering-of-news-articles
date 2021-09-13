@@ -115,7 +115,7 @@ These parameters can be adjusted within the `LDA_clustering.ipynb` (first level)
 |`iteration_interval`| Default Interval is 1|
 |`desired_coherence`| Algorithm stops when value is reached|
 
-The LDA Pipeline will filter out a predefined list of stopwords extended by a json file. You can add/remove keywords to filter out in this file:
+The LDA Pipeline filters out a predefined list of stopwords extended by a json file. You can add/remove keywords by seperating them with commas in this file:
 ```stopwords
 stopwords.json
 ```
