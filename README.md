@@ -44,6 +44,11 @@ All json-outputs follow the [news-please format](https://github.com/fhamborg/new
 
 >📋  Describe how to train the models, with example commands on how to train the models in your paper, including the full training procedure and appropriate hyperparameters.
 
+## Methodology
+
+Describe how you decide which cluster amount fits etc
+
+
 ## Archieve The Best Possible Result
 
 To archieve the best results you may change some parameters in the code. The following parameters have a significant influence on the quality of the produced dataset.
