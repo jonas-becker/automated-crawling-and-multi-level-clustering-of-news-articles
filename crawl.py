@@ -37,7 +37,7 @@ INDEXES =   ["2021-25", "2021-21", "2021-17", "2021-10", "2021-04",
 
 MAX_ARCHIVE_FILES_PER_URL = 2   #Change to increase or decrease the amount of crawled data per URL (Estimated size per archive: 1.2 GB)
 
-MINIMUM_MAINTEXT_LENGTH = 200   #How long an article should be in order to be processed. Shorter articles will be disgarded.
+MINIMUM_MAINTEXT_LENGTH = 200   #How long an article should be in order to be processed. Shorter articles will be discarded.
 
 MAX_CONNECTION_RETRIES = 3  #The amount of retries to download a WARC-File if the connection fails.
 
