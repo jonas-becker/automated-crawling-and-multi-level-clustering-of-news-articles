@@ -35,7 +35,7 @@ After Crawling you may cluster the dataset on one or multiple levels.
 - LDA Clustering: `./LDA_clustered_json`
 - Three-Level Clustering: `./clustered_json`
 
-All json-outputs follow the [news-please format](https://github.com/fhamborg/news-please) while adding some new variables. The added variables are
+All json-outputs follow the [news-please format](https://github.com/fhamborg/news-please) while adding some new variables. The added variables are:
 
 - `LDA_ID`: The ID of the articles corresponding level 1 cluster
 - `kMeans_ID`: The ID of the articles corresponding level 2 cluster
