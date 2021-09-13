@@ -29,7 +29,7 @@ The dataset consists of ~250.000 American news articles from 03/2016 to 07/2021.
 
 ## Crawling & Clustering
 
-To crawl a dataset of news articles from [CommonCrawl](https://commoncrawl.org/) type:
+To crawl a dataset of news articles from [CommonCrawl](https://commoncrawl.org/), type:
 
 ```crawl
 python crawl.py
