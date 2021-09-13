@@ -36,7 +36,7 @@ python crawl.py
 ```
 
 ### Pipeline
-This pipeline is gathering WARC data from CommonCrawl and processing it into a json layout. This json data can later be used for clustering.
+The Crawler is gathering WARC data from CommonCrawl and processing it into a json layout. This json data can later be used for clustering.
 
 
 <img src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/crawl_pipeline.png" width="800">
@@ -52,10 +52,14 @@ LDA_clustering.ipynb
 ```notebook
 KMeans_clustering.ipynb
 ```
-### Pipelines LDA Clustering
+### Pipeline LDA Clustering
+The `LDA_clustering.ipynb` notebook is taking all json files within the directory `./crawl_json` and performs this pipeline on the concluded data. Each cluster will get assigned a json file representing a cluster.
+
 <img src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/lda_pipeline.png" width="800">
 
-### Pipelines K-Means Clustering
+### Pipeline K-Means Clustering
+The `kMeans_cl.ustering.ipynb` notebook is taking all json files within the directory `./lda_clustered_json` one by one. Each level 1 cluster will then get devided into subclusters which are represented by a folder hierarchy in the output.
+
 <img src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/kMeans_pipeline.png" width="800">
 
 ## Output Directories
