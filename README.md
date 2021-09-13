@@ -41,7 +41,7 @@ After Crawling you may cluster the dataset on one or multiple levels.
 
 ### Pipelines
 #### Crawler
-<img src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/crawl_pipeline.png" width="100">
+<img src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/crawl_pipeline.png" width="1000">
 
 ### Output Directories
 - Crawler: `./crawl_json`
