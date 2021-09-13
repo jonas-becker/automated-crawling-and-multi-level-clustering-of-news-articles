@@ -48,7 +48,7 @@ The crawler is gathering WARC data from CommonCrawl and processing it into a jso
 
 <img src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/crawl_pipeline.png" width="800">
 
-Running the crawler for the first time will produce a `commoncrawl_archives.json` file. This allows the crawler to be stopped and continue crawling at a later time. If there exists a file with said name, the crawler will skip the initialization of WARC paths and continue downloading immediately (while skipping already processed data). That can be used to extend an existing dataset while only changing the amount of articles crawled per timeframe.
+Running the crawler for the first time will produce a `commoncrawl_archives.json` file. This allows the crawler to be stopped and continued crawling at a later time. If there exists a file with said name, the crawler will skip the initialization of WARC paths and continue downloading immediately (while skipping already processed data). That can be used to extend an existing dataset while only changing the amount of articles crawled per timeframe.
 
 ## Clustering
 
