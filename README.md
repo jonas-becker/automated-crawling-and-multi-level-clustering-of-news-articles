@@ -36,10 +36,12 @@ python crawl.py
 ```
 
 ### Pipeline
-This pipeline is executed 
+This pipeline is gathering WARC data from CommonCrawl and processing it into a json layout. This json data can later be used for clustering.
+
+
 <img src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/crawl_pipeline.png" width="800">
 
-##Clustering
+## Clustering
 
 After Crawling you may cluster the dataset on one or multiple levels. 
 1) **Latent Dirichlet Allocation (LDA):** First start by running the jupyter notebook:
