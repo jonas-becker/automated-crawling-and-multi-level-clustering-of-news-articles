@@ -141,18 +141,24 @@ These parameters can be adjusted within the `KMeans_clustering.ipynb` (second & 
 ## Results
 
 ### LDA Clustering
-The optimal amount of clusters is determined by calculating the coherence score for each iteration of the algorithm. The definitive choice of clusters depends on said coherence score.
+The optimal amount of clusters is determined by calculating the coherence score for each iteration of the algorithm. The definitive choice of clusters depends on said coherence score.  
+As you can see in the data, the maximum coherence score is achieved relatively quickly. This makes LDA a good choice as a level 1 clustering algorithm as it is not too specific.
 
-| Amount Of Clusters | Coherence Score |
-| ------------------ |---------------- |
-| ...   |  ...  |
-| 13   |  44.01 %  |
-| 14 *(best result)*  |  56.74 %  |
-| 15   |  50.94 %  |
+#### Data
+<img align="right" src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/coherence_score_curve.png" width="500">
+
+| Amount Of Clusters | Coherence Score | 
+| ------------------ |---------------- | 
 | ...   |  ...  | 
-<img src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/coherence_score_curve.png" width="400">
-
-
+| 11   |  46.99 %  | 
+| 12   |  53.79 %  | 
+| 13   |  44.01 %  | 
+| 14 *(best result)*  |  56.74 %  |
+| 15   |  50.94 %  | 
+| 16   |  52.05 %  | 
+| 17   |  50.54 %  | 
+| ...   |  ...  |  
+        
 ### K-Means Clustering
 The optimal amount of clusters is determined by performing K-Means on multiple amounts of clusters. The definitive choice of clusters is made by calculating the elbow/knee of the distortion curve. The amount of level 2 clusters is calculated independently for every level 1 cluster. We chose `min_df = 0.05` and `max_df = 0.6` for this dataset.
 
@@ -175,7 +181,6 @@ Our model achieves the following performance on :
 | My awesome model   |     85%         |      95%       |
 
 >📋  Include a table of results from your paper, and link back to the leaderboard for clarity and context. If your main result is a figure, include that figure and link to the command or notebook to reproduce it. 
-
 
 ## References
 
