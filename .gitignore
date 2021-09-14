@@ -2,10 +2,6 @@
 *.code-workspace
 .vscode/
 !.vscode/settings.json
-crawl_json/*
-crawl_data/*
-crawl_csv/*
-clustered_json/*
-lda_results/*
 *.7z
 *.json
+*.html
