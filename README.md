@@ -149,7 +149,9 @@ The optimal amount of clusters is determined by calculating the coherence score 
 | 13   |  44.01 %  |
 | 14 *(best result)*  |  56.74 %  |
 | 15   |  50.94 %  |
-| ...   |  ...  |
+| ...   |  ...  | 
+<img src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/coherence_score_curve.png" width="400">
+
 
 ### K-Means Clustering
 The optimal amount of clusters is determined by performing K-Means on multiple amounts of clusters. The definitive choice of clusters is made by calculating the elbow/knee of the distortion curve. The amount of level 2 clusters is calculated independently for every level 1 cluster. We chose `min_df = 0.05` and `max_df = 0.6` for this dataset.
