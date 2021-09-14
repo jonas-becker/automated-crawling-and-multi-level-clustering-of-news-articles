@@ -135,8 +135,8 @@ These parameters can be adjusted within the `KMeans_clustering.ipynb` (second & 
 | Parameter          | Description                          |
 | ------------------ |--------------------------------------|
 |`max_clusters`| Maximum possible clusters|
-|`min_df`|
-|`max_df`|
+|`min_df`| Igonore terms that appear in less articles (percent) |
+|`max_df`| Igonore terms that appear in more articles (percent) |
 
 ## Results
 
@@ -152,7 +152,7 @@ The optimal amount of clusters is determined by calculating the coherence score 
 | ...   |  ...  |
 
 ### K-Means Clustering
-The optimal amount of clusters is determined by performing K-Means on multiple amounts of clusters. The definitive choice of clusters is made by calculating the elbow/knee of the distortion curve. The amount of level 2 clusters is calculated independently for every level 1 cluster.
+The optimal amount of clusters is determined by performing K-Means on multiple amounts of clusters. The definitive choice of clusters is made by calculating the elbow/knee of the distortion curve. The amount of level 2 clusters is calculated independently for every level 1 cluster. We chose `min_df = 0.05` and `max_df = 0.6` for this dataset.
 
 | Amount Of Clusters | Distortion |
 | ------------------ |---------------- |
