@@ -20,5 +20,8 @@
     "thanks", "content", "start", "side", "experience", "moment", "bit", "bit ly", "ly", "terms", "everybody", "somebody",
     "minute", "second", "millisecond", "index", "data", "factset", "reuters", "sec", "seconds",
     "account", "comment", "log", "newsletter", "logs", "title", "getty", "image", "images", "credit", "times", "nytimes",
-    "access", "subscription"
+    "access", "subscription", "cnn", "washingtonpost", "abcnews", "go", "bbc", "cbsnews", "chicagotribune", "foxnews", "huffpost", "fox", "latimes",
+    "nbcnews", "nbc", "npr", "update", "politico", "reuters", "slate", "theguardian", "wsj", "usatoday", "breitbart", "nypost", "cbslocal", "cbs", 
+    "nydailynews", "newsweek", "weekly", "boston", "denverpost", "seattletimes", "miamiherald", "observer", "washingtontimes", "newsday", "theintercept",
+    "org", "net", "internet", "web", "report", "ticker", "live", "liveticker", "service", "change", "york", "san", "edt", "utc", "gmt"
 ]
