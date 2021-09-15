@@ -27,6 +27,9 @@ To install requirements:
 ```setup
 pip install -r requirements.txt
 ```
+
+We recommend using `python 3.9.4` to run this project.
+
 This project consists of two parts: The crawler and the clustering algorithms. The crawler works as a usual python script. The clustering is performed within two jupyter notebooks to allow easier adjusting of hyperparameters and visualisations. 
 
 - You can download a sample dataset which has been crawled with this project by clicking [here](https://drive.google.com/drive/u/0/folders/1hXE7dH-QrgaeUjD9fOlfpDlApA8XBPTP).
@@ -163,22 +166,13 @@ The optimal amount of clusters is determined by performing K-Means on multiple a
 | Amount Of Clusters | Distortion |
 | ------------------ |---------------- |
 | ...   |  ...  |
-| 6   |  44.01 %  |
-| 7 *(best result)*  |  56.74 %  |
-| 8   |  50.94 %  |
+| 6   |  X %  |
+| 7 *(best result)*  |  X %  |
+| 8   |  X %  |
 | ...   |  ...  |
 
->📋  Describe how to evaluate the trained models on benchmarks reported in the paper, give commands that produce the results (section below).
-
-Our model achieves the following performance on :
-
-### [Image Classification on ImageNet](https://paperswithcode.com/sota/image-classification-on-imagenet)
-
-| Model name         | Top 1 Accuracy  | Top 5 Accuracy |
-| ------------------ |---------------- | -------------- |
-| My awesome model   |     85%         |      95%       |
-
->📋  Include a table of results from your paper, and link back to the leaderboard for clarity and context. If your main result is a figure, include that figure and link to the command or notebook to reproduce it. 
+### Dataset
+The complete resulting dataset (containing ~268.000 clustered news articles) can be downloaded by clicking here.
 
 ## References
 
