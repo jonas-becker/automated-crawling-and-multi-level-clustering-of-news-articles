@@ -90,6 +90,7 @@ All json-outputs follow the [news-please format](https://github.com/fhamborg/new
 |`LDA_topic_keywords`| The most dominant keywords within a LDA cluster
 |`kMeans_ID`| ID of the articles corresponding to level 2 cluster|
 |`kMeans_topic_keywords`| The most dominant keywords within a K-Means cluster|
+|`month-year`| Representing the timeframe this article has been released in|
 
 ## Methodology
 
