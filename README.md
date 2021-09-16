@@ -83,6 +83,7 @@ The `KMeans.ipynb` notebook is taking all json files within the directory `./lda
 The clustering output consists of multiple directories and json files which are named after the format
 - LDA: `cluster_X-keyword1_keyword2_keyword3`
 - K-Means: `cluster_X-keyword1_keyword2_keyword3_keyword4_keyword5`
+- Timeframe: `year-month.json`
 
 with the keywords representing the most dominant keywords within the cluster (sorted descending).
 All json-outputs follow the [news-please format](https://github.com/fhamborg/news-please) while adding some new variables. The added variables are:
