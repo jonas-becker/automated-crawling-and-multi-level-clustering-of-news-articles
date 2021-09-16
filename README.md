@@ -164,6 +164,7 @@ As you can see in the data, the maximum coherence score is achieved relatively q
 ### K-Means Clustering
 The optimal amount of clusters is determined by performing K-Means on multiple amounts of clusters. The definitive choice of clusters is made by calculating the elbow/knee of the distortion curve. The amount of level 2 clusters is calculated independently for every level 1 cluster. We chose `min_df = 0.05` and `max_df = 0.6` for this dataset.
 
+#### Data
 | Amount Of Clusters | Distortion |
 | ------------------ |---------------- |
 | ...   |  ...  |
