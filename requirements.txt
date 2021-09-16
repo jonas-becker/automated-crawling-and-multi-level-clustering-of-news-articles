@@ -17,4 +17,5 @@ gensim
 matplotlib
 kneed
 pyLDAvis
+yellowbrick
 ujson
