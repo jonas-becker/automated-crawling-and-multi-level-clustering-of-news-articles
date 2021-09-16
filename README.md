@@ -9,7 +9,6 @@ Crawling a dataset of news articles from CommonCrawl and clustering them by thei
     - [LDA Pipeline](#pipeline-lda-clustering)
     - [K-Means Pipeline](#pipeline-k-means-clustering)
   - [Output Directories](#output-directories)
-  - [Methodology](#methodology)
   - [Parameters](#parameters)
     - [Crawler](#crawler)
     - [Clustering](#clustering)
@@ -91,11 +90,6 @@ All json-outputs follow the [news-please format](https://github.com/fhamborg/new
 |`kMeans_ID`| ID of the articles corresponding to level 2 cluster|
 |`kMeans_topic_keywords`| The most dominant keywords within a K-Means cluster|
 |`month-year`| Representing the timeframe this article has been released in|
-
-## Methodology
-
-Describe how you decide which cluster amount fits etc
-
 
 ## Parameters
 
