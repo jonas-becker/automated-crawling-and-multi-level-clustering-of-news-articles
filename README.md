@@ -159,11 +159,11 @@ As you can see in the data, the maximum coherence score is achieved relatively q
 | Amount Of Clusters | Coherence Score (percentage) | 
 | ------------------ |---------------- | 
 | ...   |  ...  | 
-| 17   |  47.20  | 
-| 18   |  44.97  | 
-| 19 *(best result)*  |  56.56  |
-| 20   |  50.42  | 
-| 21   |  48.17  | 
+| 14   |  48.48  | 
+| 15   |  51.29  | 
+| 16 *(best result)*  |  58.06  |
+| 17   |  50.73  | 
+| 18   |  54.37  | 
 | ...   |  ...  |  
         
 ### K-Means Clustering
