@@ -21,7 +21,12 @@ Crawling a dataset of news articles from CommonCrawl and clustering them by thei
 
 ## Motivation
 Every day thousands of news articles with different political orientations are released.  
-The goal of this project is to create a dataset based on a high amount of news articles, which are clustered by their topics. This will provide useful information about the focus of news media during different timeframes.  
+The goal of this project is to create a large collection of news articles (>250K) that...
+1) ...covers the latest five years of the English-speaking news agenda 
+2) ...has a multi-level topic structure to enable exploration of news articles at varying similarity level  
+
+e.g., from a cluster that reports about the power of the national leaders worldwide to more narrowly related clusters that report about leaders of a particular country. Because of the five-years timeframe of this news collection, it is possible to investigate how the narrative, agenda, and/or framing changed within the narrow clusters.
+
 This project has been a part of the course [Key Competencies in Computer Science](https://dke.uni-wuppertal.de/en/teaching.html) at the University of Wuppertal to annotate a Crossdocument Coreference Resolution Model and was supervised by   [Anastasia Zhukova](https://github.com/anastasia-zhukova).
 
 ## Installation
