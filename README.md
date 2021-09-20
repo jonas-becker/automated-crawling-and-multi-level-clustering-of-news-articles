@@ -21,10 +21,16 @@ This project has been a part of the course [Key Competencies in Computer Science
 
 ## Installation
 
-To install requirements:
+To install requirements with pip:
 
 ```setup
 pip install -r requirements.txt
+```
+
+Or to set up a conda enviroment:
+
+```setup
+conda env create -f env.yml
 ```
 
 We recommend using `python 3.9.4` to run this project.
@@ -32,7 +38,7 @@ We recommend using `python 3.9.4` to run this project.
 This project consists of two parts: The crawler and the clustering algorithms. The crawler works as a usual python script. The clustering is performed within two jupyter notebooks to allow easier adjusting of hyperparameters and visualisations. 
 
 - You can download a sample dataset which has been crawled with this project by clicking [here](https://www.kaggle.com/jonasbecker98/news-website-articles).
-- You can download the already clustered dataset by clicking here.
+- You can download the already clustered dataset by clicking [here](https://www.kaggle.com/jonasbecker98/286k-topic-clustered-news-articles).
 
 The dataset consists of ~268.000 American news articles from 03/2016 to 07/2021. The websites chosen are based on the [POLUSA](https://arxiv.org/abs/2005.14024) dataset to ensure a diverse political spectrum.
 
@@ -170,22 +176,15 @@ As you can see in the data, the maximum coherence score is achieved relatively q
 The optimal amount of clusters is determined by performing K-Means on multiple amounts of clusters. The definitive choice of clusters is made by calculating the elbow/knee of the distortion curve. The amount of level 2 clusters is calculated independently for every level 1 cluster. We chose `min_df = 0.05` and `max_df = 0.6` for this dataset.
 
 #### Data
-We applied K-Means onto every main LDA-Cluster. Here you can see the detected elbow/knee for the distortion curve of our first four clusters:
-```clusters
-cluster_0-president_king_trump
-cluster_1-city_loan_business
-cluster_2-india_thomson_business
-cluster_3-police_house_court
-```
+We applied K-Means onto every main LDA-Cluster. Here you can see the detected elbow/knee for the distortion curve of `cluster_0-president_king_trump`:
+
+<img src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/kMeans_elbow_curves/0.png" width="450" title="Cluster 0" > 
+
 You can find all additional distortion graphs for our dataset in the directory `./repo_images/kMeans_elbow_curves/`. Each detected elbow has been applied to be the cluster amount of choice for the K-Means Clustering.
-
-<img src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/kMeans_elbow_curves/0.png" width="450" title="Cluster 0" > <img src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/kMeans_elbow_curves/1.png" width="450" title="Cluster 1">
-
-<img src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/kMeans_elbow_curves/2.png" width="450" title="Cluster 2" > <img src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/kMeans_elbow_curves/3.png" width="450" title="Cluster 3" >
 
 
 ### Dataset
-The complete resulting dataset (containing ~268.000 clustered news articles) can be downloaded by clicking here.
+The complete resulting dataset (containing ~268.000 clustered news articles) can be downloaded by clicking [here](https://www.kaggle.com/jonasbecker98/286k-topic-clustered-news-articles).
 
 ## References
 
