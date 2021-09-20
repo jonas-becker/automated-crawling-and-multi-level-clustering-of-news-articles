@@ -37,9 +37,6 @@ We recommend using `python 3.9.4` to run this project.
 
 This project consists of two parts: The crawler and the clustering algorithms. The crawler works as a usual python script. The clustering is performed within two jupyter notebooks to allow easier adjusting of hyperparameters and visualisations. 
 
-- You can download a sample dataset which has been crawled with this project by clicking [here](https://www.kaggle.com/jonasbecker98/news-website-articles).
-- You can download the already clustered dataset by clicking [here](https://www.kaggle.com/jonasbecker98/286k-topic-clustered-news-articles).
-
 The dataset consists of ~268.000 American news articles from 03/2016 to 07/2021. The websites chosen are based on the [POLUSA](https://arxiv.org/abs/2005.14024) dataset to ensure a diverse political spectrum.
 
 ## Crawling
@@ -203,7 +200,9 @@ You can find all additional distortion graphs for our dataset in the directory `
 
 
 ### Dataset
-The complete resulting dataset (containing ~268.000 clustered news articles) can be downloaded by clicking [here](https://www.kaggle.com/jonasbecker98/286k-topic-clustered-news-articles).
+The complete resulting dataset is containing ~268.000 clustered news articles.
+- You can download the sample dataset which has been crawled with this project by clicking [here](https://www.kaggle.com/jonasbecker98/news-website-articles).
+- You can download the already clustered dataset by clicking [here](https://www.kaggle.com/jonasbecker98/286k-topic-clustered-news-articles).
 
 ## References
 
