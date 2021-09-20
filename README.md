@@ -179,9 +179,7 @@ cluster_3-police_house_court
 ```
 You can find all additional distortion graphs for our dataset in the directory `./repo_images/kMeans_elbow_curves/`. Each detected elbow has been applied to be the cluster amount of choice for the K-Means Clustering.
 
-<img src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/kMeans_elbow_curves/0.png" width="450" title="Cluster 0" > <img src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/kMeans_elbow_curves/1.png" width="450" title="Cluster 1">
-
-<img src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/kMeans_elbow_curves/2.png" width="450" title="Cluster 2" > <img src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/kMeans_elbow_curves/3.png" width="450" title="Cluster 3" >
+<img src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/kMeans_elbow_curves/0.png" width="450" title="Cluster 0" > 
 
 
 ### Dataset
