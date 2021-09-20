@@ -31,7 +31,9 @@ Or to set up a conda enviroment:
 
 ```setup
 conda env create -f env.yml
+conda activate kcc
 ```
+
 
 We recommend using `python 3.9.4` to run this project.
 
