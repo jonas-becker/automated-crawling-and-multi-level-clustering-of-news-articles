@@ -21,7 +21,7 @@ Crawling a dataset of news articles from CommonCrawl and clustering them by thei
 
 ## Motivation
 Every day thousands of news articles with different political orientations are released.  
-The goal of this project is to create a large collection of news articles (>250K) that...
+The goal of this project is to create a large collection of news articles (>250k) that...
 1) ...covers the latest five years of the English-speaking news agenda 
 2) ...has a multi-level topic structure to enable exploration of news articles at varying similarity level  
 
