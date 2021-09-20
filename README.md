@@ -26,13 +26,7 @@ This project has been a part of the course [Key Competencies in Computer Science
 
 ## Installation
 
-To install requirements with pip:
-
-```setup
-pip install -r requirements.txt
-```
-
-Or to set up a conda enviroment:
+To set up a conda enviroment and install requirements:
 
 ```setup
 conda env create -f env.yml
