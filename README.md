@@ -83,7 +83,7 @@ In preprocessing multiple filters are being applied to the dataset. This makes t
 <img src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/all_words.png" width="450" > <img src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/prepro_ready_to_cluster.png" width="450">
 
 ### Pipeline K-Means Clustering
-The `KMeans.ipynb` notebook is taking all json files within the directory `./lda_clustered_json` one by one. Each level 1 cluster will then get devided into subclusters which are represented by a folder hierarchy in the output.
+To apply K-Means on the text based dataset we are generating tfidf vectors for all news articles to represent each document. The `KMeans.ipynb` notebook is taking all json files within the directory `./lda_clustered_json` one by one. Each level 1 cluster will then get devided into subclusters which are represented by a folder hierarchy in the output.
 
 <img src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/kMeans_pipeline.png" width="800">
 
