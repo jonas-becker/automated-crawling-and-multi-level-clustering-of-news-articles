@@ -108,6 +108,25 @@ All json-outputs follow the [news-please format](https://github.com/fhamborg/new
 |`kMeans_topic_keywords`| The most dominant keywords within a K-Means cluster|
 |`year-month`| Representing the timeframe this article has been released in|
 
+### JSON Output Example
+
+```json-output
+"date_download": "09/07/2021, 01:35:50",
+"date_modify": "09/07/2021, 01:35:50",
+"date_publish": "2016-05-31T05:12:50Z",
+"description": "string",
+"language": "en",
+"source_domain": "www.website.com",
+"maintext": "maintext string",
+"url": "http://www.website.com/xyz",
+"LDA_ID": 0,
+"LDA_topic_percentage": 0.5086100101,
+"LDA_topic_keywords": "president, king, trump, stone, heche, government, house, right, degeneres, official",
+"kMeans_ID": 0,
+"kMeans_topic_keywords": "photo, journal, wall, street, jason, accurate, trump, look, transcript, tour",
+"year_month": "2016-05"
+```
+
 ## Parameters
 
 To achieve the best results you may change some parameters in the code. The following parameters have a significant influence on the quality of the produced dataset.
