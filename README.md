@@ -200,7 +200,7 @@ You can find all additional distortion graphs for our dataset in the directory `
 
 
 ### Dataset
-The complete resulting dataset is containing ~268.000 clustered news articles.
+The complete resulting dataset is containing ~268.000 clustered news articles from 03/2016 to 07/2021.
 - You can download the sample dataset which has been crawled with this project by clicking [here](https://www.kaggle.com/jonasbecker98/news-website-articles).
 - You can download the already clustered dataset by clicking [here](https://www.kaggle.com/jonasbecker98/286k-topic-clustered-news-articles).
 
