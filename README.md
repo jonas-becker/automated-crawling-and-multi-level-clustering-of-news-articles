@@ -9,10 +9,15 @@ Crawling a dataset of news articles from CommonCrawl and clustering them by thei
     - [LDA Pipeline](#pipeline-lda-clustering)
     - [K-Means Pipeline](#pipeline-k-means-clustering)
   - [Output Directories](#output-directories)
+    - [JSON Output Example](#json-output-example)
   - [Parameters](#parameters)
     - [Crawler](#crawler)
     - [Clustering](#clustering)
-  - [Contributing](#contributing)
+  - [Results](#results)
+    - [LDA Clustering](#lda-clustering)
+    - [K-Means Clustering](#k-means-clustering)
+    - [Dataset](#dataset)
+  - [References](#references)
 
 ## Motivation
 Every day thousands of news articles with different political orientations are released.  
