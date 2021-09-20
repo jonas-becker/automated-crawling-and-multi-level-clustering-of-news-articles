@@ -31,7 +31,7 @@ Or to set up a conda enviroment:
 
 ```setup
 conda env create -f env.yml
-conda activate kcc
+conda activate kccs
 ```
 
 
