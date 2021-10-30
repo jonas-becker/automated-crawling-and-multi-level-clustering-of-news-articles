@@ -138,7 +138,7 @@ To achieve the best results you may change some parameters in the code. The foll
 
 | Parameter          | Description                          |
 | ------------------ |--------------------------------------|
-| `TARGET_WEBSITES`  | Websites you want to keep crawled data|
+| `TARGET_WEBSITES`  | Websites you want to keep crawled data from|
 | `TEST_TARGETS`| URLs to request WARC-files from CommonCrawl|
 |`INDEXES`| Indexes from CommonCrawl |
 |`MAX_ARCHIVE_FILES_PER_URL`| Maximum amount of archive files per item of `TEST_TARGETS`|
