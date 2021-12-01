@@ -182,7 +182,7 @@ The optimal amount of clusters is determined by calculating the coherence score 
 As you can see in the data, the maximum coherence score is achieved relatively quickly. This makes LDA a good choice as a level 1 clustering algorithm as it is not too specific.
 
 #### Data
-<img align="right" src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/coherence_score_curve.png" width="400">
+<img align="right" src="https://github.com/snakeeye98/automated-crawling-and-multi-level-clustering-of-news-articles/blob/main/repo_images/coherence_score_curve.png" width="380">
 
 | Amount Of Clusters | Coherence Score (percentage) | 
 | ------------------ |---------------- | 
